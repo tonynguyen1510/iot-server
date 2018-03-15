@@ -1,0 +1,51 @@
+{
+	"db": {
+		"name": "db",
+		"connector": "memory"
+	},
+	"mongod": {
+		"host": "127.0.0.1",
+		"port": 27017,
+		"url": "",
+		"database": "chove",
+		"password": "",
+		"name": "mongod",
+		"user": "chove",
+		"connector": "mongodb",
+		"allowExtendedOperators": true
+	},
+	"emailDs": {
+		"name": "emailDs",
+		"connector": "mail",
+		"transports": [
+			{
+				"type": "smtp",
+				"host": "smtp.gmail.com",
+				"secure": true,
+				"port": 465,
+				"tls": {
+					"rejectUnauthorized": false
+				},
+				"auth": {
+					"user": "alfaziapplication@gmail.com",
+					"pass": "Alfazi12#"
+				}
+			}
+		]
+	},
+	"storage": {
+		"name": "storage",
+		"connector": "loopback-component-storage",
+		"provider": "amazon",
+		"acl": "public-read",
+		"key": "JvzYuLhUXsweaQVN0QT0kaGff268TZZseC34EmJt",
+		"keyId": "AKIAIW2TEWGCLJZWWCUA",
+		"maxFileSize": 20971520,
+		"allowedContentTypes": [
+			"image/jpg",
+			"image/jpeg",
+			"image/png",
+			"image/tiff"
+		]
+	}
+}

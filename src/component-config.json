@@ -1,0 +1,10 @@
+{
+	"loopback-component-explorer": {
+		"mountPath": "/explorer",
+		"uiDirs": "src/explorer",
+		"apiInfo": {
+			"title": "CHOVE.VN API",
+			"description": "Copyright © Chove.vn <br /> <a href='/explorer/docs.html'>Document</a>"
+		}
+	}
+}

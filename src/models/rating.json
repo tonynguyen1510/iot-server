@@ -1,0 +1,49 @@
+{
+	"name": "Rating",
+	"plural": "ratings",
+	"base": "PersistedModel",
+	"idInjection": true,
+	"options": {
+		"validateUpsert": true
+	},
+	"scope": {
+		"order": "createdAt DESC"
+	},
+	"mixins": {
+		"Counts": true
+	},
+	"properties": {
+		"createdAt": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"updatedAt": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"star": {
+			"type": "number",
+			"required": true
+		},
+		"comment": {
+			"type": "string"
+		}
+	},
+	"validations": [],
+	"relations": {
+		"creator": {
+			"type": "belongsTo",
+			"model": "user",
+			"foreignKey": "creatorId",
+			"required": true
+		},
+		"receiver": {
+			"type": "belongsTo",
+			"model": "user",
+			"foreignKey": "receiverId",
+			"required": true
+		}
+	},
+	"acls": [],
+	"methods": {}
+}
