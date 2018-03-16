@@ -72,7 +72,7 @@ export default function (User) {
 		if (!user.email || !user.username) {
 			return next({
 				statusCode: 400,
-				code: 'EMAIL_PHONE_REQUIRED',
+				code: 'EMAIL_USERNAME_REQUIRED',
 				message: '{{email}} and {{username}} is required'
 			});
 		}
