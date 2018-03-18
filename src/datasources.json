@@ -38,8 +38,8 @@
 		"connector": "loopback-component-storage",
 		"provider": "amazon",
 		"acl": "public-read",
-		"key": "JvzYuLhUXsweaQVN0QT0kaGff268TZZseC34EmJt",
-		"keyId": "AKIAIW2TEWGCLJZWWCUA",
+		"key": "gN6eJQfTdHvhbhYNdU+nrJGZKJjhb+icpFlhyFWZ",
+		"keyId": "AKIAJ4E2OH2ENEJS7OFA",
 		"maxFileSize": 20971520,
 		"allowedContentTypes": [
 			"image/jpg",
