@@ -1,90 +1,47 @@
-// /* --------------------------------------------------------
-// * Author Trần Đức Tiến
-// * Email ductienas@gmail.com
-// * Phone 0972970075
-// *
-// * Created: 2018-02-28 01:46:37
-// *------------------------------------------------------- */
-// import userData from '../../mockData/user-data.json';
-// import questionData from '../../mockData/question-data.json';
-// import answerData from '../../mockData/answer-data.json';
-// import likeData from '../../mockData/like-data.json';
+/* --------------------------------------------------------
+* Author Trần Đức Tiến
+* Email ductienas@gmail.com
+* Phone 0972970075
+*
+* Created: 2018-02-28 01:46:37
+*------------------------------------------------------- */
+import userData from '../../mockData/user-data.json';
+import flightRawData from '../../mockData/flight-data.json';
 
-// export default (app) => {
-// 	const User = app.models.user;
-// 	const Question = app.models.Question;
-// 	const Answer = app.models.Answer;
-// 	const AnswerLike = app.models.AnswerLike;
+export default (app) => {
+	const User = app.models.user;
+	const Flight = app.models.Flight;
 
-// 	User.find({}, (errCheck, resultsCheck) => {
-// 		if (resultsCheck.length === 0) {
-// 			console.log('Seed user -----------');
-// 			User.create(userData, (err, users) => {
-// 				if (err) {
-// 					throw err;
-// 				}
+	User.find({}, (err, resultsCheck) => {
+		if (err) {
+			throw err;
+		}
+		if (resultsCheck.length === 0) {
+			User.create(userData, (err1, users) => {
+				if (err1) {
+					throw err1;
+				}
 
-// 				const userIds = users.map((user) => {
-// 					return user.id;
-// 				});
+				const userIds = users.map((user) => user.id);
 
-// 				const questionDataAdd = questionData.map((question) => {
-// 					return {
-// 						...question,
-// 						creatorId: userIds[Math.floor(Math.random() * 100)],
-// 					};
-// 				});
+				const flightData = flightRawData.map((item) => ({
+					...item,
+					startDate: new Date(item.startDate),
+					endDate: new Date(item.endDate),
+					sellerId: userIds[Math.floor(Math.random() * 100)],
+					buyerId: userIds[Math.floor(Math.random() * 100)],
+				}));
 
-// 				console.log('Seed question -----------');
+				Flight.create(flightData, (err2) => {
+					if (err2) {
+						console.log('erro', err2);
+						throw err2;
+					}
 
-// 				Question.create(questionDataAdd, (errr, questions) => {
-// 					if (errr) {
-// 						throw errr;
-// 					}
+					console.log('Seed success');
+				});
+			});
+		}
+	});
 
-// 					const questionIds = questions.map((question) => {
-// 						return question.id;
-// 					});
-
-// 					const answerDataAdd = answerData.map((answer) => {
-// 						return {
-// 							...answer,
-// 							creatorId: userIds[Math.floor(Math.random() * 100)],
-// 							questionId: questionIds[Math.floor(Math.random() * 100)],
-// 						};
-// 					});
-
-// 					console.log('Seed answer -----------');
-
-// 					Answer.create(answerDataAdd, (errrr, answers) => {
-// 						if (errrr) {
-// 							throw errrr;
-// 						}
-
-// 						const answerIds = answers.map((answer) => {
-// 							return answer.id;
-// 						});
-
-// 						const answerLikeDataAdd = likeData.map((Answerlike) => {
-// 							return {
-// 								...Answerlike,
-// 								creatorId: userIds[Math.floor(Math.random() * 100)],
-// 								receiverId: userIds[Math.floor(Math.random() * 100)],
-// 								answerId: answerIds[Math.floor(Math.random() * 100)],
-// 							};
-// 						});
-
-// 						console.log('Seed like -----------');
-
-// 						AnswerLike.create(answerLikeDataAdd, (errrrr) => {
-// 							if (errrrr) {
-// 								throw errrrr;
-// 							}
-// 							console.log('Seed success');
-// 						});
-// 					});
-// 				});
-// 			});
-// 		}
-// 	});
-// };
+};

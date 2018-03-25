@@ -1,0 +1,33 @@
+{
+	"name": "Tracking",
+	"base": "PersistedModel",
+	"idInjection": true,
+	"options": {
+	"validateUpsert": true
+	},
+	"properties": {
+		"createdAt": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"action": {
+			"type": "string",
+			"required": true
+		},
+		"flight": {
+			"type": "object",
+			"required": true
+		}
+	},
+	"validations": [],
+	"relations": {
+		"author": {
+			"type": "belongsTo",
+			"model": "user",
+			"foreignKey": "userId",
+			"required": true
+		}
+	},
+	"acls": [],
+	"methods": {}
+}

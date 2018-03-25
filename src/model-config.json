@@ -1,18 +1,18 @@
 {
 	"_meta": {
 		"sources": [
-			"loopback/common/models",
-			"loopback/src/models",
-			"../common/models",
-			"../models",
-			"./models"
+		"loopback/common/models",
+		"loopback/src/models",
+		"../common/models",
+		"../models",
+		"./models"
 		],
 		"mixins": [
-			"loopback/common/mixins",
-			"loopback/src/mixins",
-			"../node_modules/loopback-counts-mixin",
-			"../common/mixins",
-			"./mixins"
+		"loopback/common/mixins",
+		"loopback/src/mixins",
+		"../node_modules/loopback-counts-mixin",
+		"../common/mixins",
+		"./mixins"
 		]
 	},
 	"Container": {
@@ -46,6 +46,18 @@
 		"public": false
 	},
 	"user": {
+		"dataSource": "mongod",
+		"public": true
+	},
+	"Flight": {
+		"dataSource": "mongod",
+		"public": true
+	},
+	"Bid": {
+		"dataSource": "mongod",
+		"public": true
+	},
+	"Tracking": {
 		"dataSource": "mongod",
 		"public": true
 	}

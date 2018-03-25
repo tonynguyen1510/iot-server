@@ -9,4 +9,6 @@
 export default {
 	userStatus: ['active', 'inactive'],
 	userLoginType: ['email', 'facebook', 'google'],
+	flightStatus: ['wait-for-approve', 'open', 'pending-payment', 'closed'],
+	flightType: ['sell', 'buy', 'bid'],
 };

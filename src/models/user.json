@@ -78,8 +78,8 @@
 		},
 		"ratingsCount": {
 			"type": "number",
-			"default": 0,
-			"index": true
+			"index": true,
+			"default": 0
 		},
 		"ratingsStats": {
 			"type": {
@@ -113,6 +113,12 @@
 			"type": "hasMany",
 			"model": "Rating",
 			"foreignKey": "receiverId",
+			"primaryKey": "id"
+		},
+		"logs": {
+			"type": "hasMany",
+			"model": "Tracking",
+			"foreignKey": "userId",
 			"primaryKey": "id"
 		}
 	},
@@ -281,7 +287,7 @@
 					"arg": "ttl",
 					"type": "number",
 					"description": "Time to live (seconds) (2 weeks by default)"
-				}
+					}
 			],
 			"returns": {
 				"arg": "result",

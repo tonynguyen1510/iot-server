@@ -1,0 +1,39 @@
+{
+  "name": "Bid",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "createdAt": {
+      "type": "date",
+      "defaultFn": "now"
+    },
+    "price": {
+      "type": "number",
+      "required": true
+    },
+    "status": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+	"bidder": {
+		"type": "belongsTo",
+		"model": "user",
+		"foreignKey": "bidderId",
+		"required": true
+	},
+	"flight": {
+		"type": "belongsTo",
+		"model": "Flight",
+		"foreignKey": "flightId",
+		"required": true
+	}
+  },
+  "acls": [],
+  "methods": {}
+}
