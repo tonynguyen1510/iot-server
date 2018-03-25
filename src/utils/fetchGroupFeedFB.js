@@ -1,7 +1,7 @@
 import FB from 'fb';
 import { app } from '../server';
 
-const defaultAccessToken = 'EAAZAlZAgAfFCcBAJpT9nxVZCgMyRzQWOu5eqybyqcrfgXF77jFfiSMViDkcj1ZCQE3pAInWHYtYTo8RklVmXenv3eapEA92UnFmVj0ZBuAcqcDpP0tPQuwaklr5ucXYrw3XsGHv1EDL9FaUWQOKYdxmOe9i8Xrud9PlVhOlruGH89mk91IrZCIo5teeb34EZAkZD';
+const defaultAccessToken = 'EAAZAlZAgAfFCcBALLDHnynBY74AuNLrZCvTEqh3j08R2FGnmXlz7vUGSOW7BJGCTUKuZCdLEP7E4N5QBkQ22Ob4xUdCKlKYRUAtHU2YKy2TaolOmckNJ6eZCKYFR21aAsrbgjnxMKEFR9ebjYZAEF6WJF8EOFRrJ7PyLZAoZCpmYwKYlzmHnNhv6PU4DAYG59cMZD';
 const groupId = '588371654842756';
 const clientId = '1800338623370279';
 const clientSecret = '5781762d36cadb9417fa63842708d4a9';
@@ -42,7 +42,7 @@ export default function fetchGroupFeedFB(job, done) {
 				const flightItem = {
 					feedFbId: item.id,
 					from: item.from,
-					status: 'wait-for-approve',
+					status: 'Wait for approval',
 					content: item.message || item.story,
 				};
 
