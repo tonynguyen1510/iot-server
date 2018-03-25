@@ -47,12 +47,12 @@
 		"flightType": {
 			"type": "string",
 			"required": true,
-			"default": "one-way"
+			"default": "One way"
 		},
 		"type": {
 			"type": "string",
 			"required": true,
-			"default": "sell"
+			"default": "Sell"
 		},
 		"stock": {
 			"type": "number"

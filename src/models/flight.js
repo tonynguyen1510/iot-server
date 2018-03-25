@@ -4,24 +4,30 @@ export default function(Flight) {
 		const Tracking = Flight.app.models.Tracking;
 		const Email = Flight.app.models.Email;
 		const User = Flight.app.models.user;
+		const newData = ctx.instance || ctx.data;
+		const oldData = ctx.currentInstance || {};
 		const isNewInstance = ctx.isNewInstance;
-		const flight = ctx.instance || ctx.data;
-		const _sendMail = (userId, html) => {
+
+		const _sendEmail = (userId, html) => {
+			if (!userId) {
+				return Promise.resolve(true);
+			}
+
 			return new Promise((resolve) => {
 				User.findById(userId, (user) => {
-					// FIX ME: Update from email
 					Email.send({
+						// to: 'maihuunhan30071992@gmail.com',
 						to: user.email,
 						from: 'noreply@chove.vn',
-						subject: 'Email confirm transaction',
-						html: html
+						subject: 'Transaction info',
+						html: 'Transaction Info'
 					}, (err) => {
 						if (err) {
-							console.log('err', err);
-							resolve(false);
-						} else {
-							resolve(true);
+							console.log('send email error', err);
+							return next(err);
 						}
+						console.log('send email success');
+						resolve(true);
 					});
 				});
 			});
@@ -31,46 +37,46 @@ export default function(Flight) {
 			return next();
 		}
 
-		if (flight.status === 'closed') {
+		if (oldData.status !== 'Closed' && newData.status === 'Closed') {
 			Tracking.create({
-				userId: flight.sellerId,
-				flight: { ...flight },
+				userId: newData.buyerId,
+				action: 'payment success',
+				flight: { ...oldData.__data, ...newData },
 			});
+
 			Promise.all([
-				_sendMail(flight.sellerId),
-				_sendMail(flight.buyerId)
-			]).then((result) => {
-				if (result.every((item) => !!item)) {
-					next();
-				} else {
-					next(new Error('send email error'));
-				}
+				_sendEmail(newData.sellerId),
+				_sendEmail(newData.buyerId),
+			]).then(() => {
+				next();
 			});
-		} else if (flight.status === 'pending-payment') {
-			if (flight.type === 'sell') {
+		} else if (oldData.status !== 'Payment pending' && newData.status === 'Payment pending') {
+			if (newData.type === 'Sell') {
+				console.log('type sell payment pending');
+
 				Tracking.create({
-					userId: flight.sellerId,
-					flight: { ...flight },
+					userId: newData.buyerId,
+					action: 'buy',
+					flight: { ...oldData.__data, ...newData },
 				});
-				_sendMail(flight.sellerId).then((result) => {
-					if (result) {
-						next();
-					} else {
-						next(new Error('send email error'));
-					}
+
+				_sendEmail(newData.sellerId).then(() => {
+					next();
 				});
-			} else if (flight.type === 'buy') {
+			} else if (newData.type === 'Buy') {
+				console.log('type buy payment pending');
+
 				Tracking.create({
-					userId: flight.buyerId,
-					flight: { ...flight },
+					userId: newData.sellerId,
+					action: 'sell',
+					flight: { ...oldData.__data, ...newData },
 				});
-				_sendMail(flight.buyerId).then((result) => {
-					if (result) {
-						next();
-					} else {
-						next(new Error('send email error'));
-					}
+
+				_sendEmail(newData.buyerId).then(() => {
+					next();
 				});
+			} else {
+				next();
 			}
 		} else {
 			next();
