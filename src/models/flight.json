@@ -54,6 +54,12 @@
 			"required": true,
 			"default": "Sell"
 		},
+		"seatType": {
+			"type": "string"
+		},
+		"packageWeight": {
+			"type": "string"
+		},
 		"stock": {
 			"type": "number"
 		},
