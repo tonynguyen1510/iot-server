@@ -16,6 +16,7 @@ const startOfDay = (dirtyDate) => {
 export default function fetchGroupFeedFB(job, done) {
 	const data = job.attrs.data || {};
 	const accessToken = data.fbAccessToken || defaultAccessToken;
+	const unixtime = data.unixtime || startOfDay(Date.now()).getTime() / 1000;
 	const Flight = app.models.Flight;
 
 	/* eslint-disable camelcase */
@@ -26,6 +27,7 @@ export default function fetchGroupFeedFB(job, done) {
 		fb_exchange_token: accessToken,
 	}, function (res) {
 		job.attrs.data.fbAccessToken = res.access_token;
+		job.attrs.data.unixtime = new Date().getTime() / 1000;
 
 		// const unixtime = startOfDay(Date.now()).getTime() / 1000;
 
@@ -33,6 +35,7 @@ export default function fetchGroupFeedFB(job, done) {
 		FB.api(`${groupId}/feed`, {
 			fields: ['message', 'from', 'story'],
 			access_token: res.access_token,
+			unixtime,
 		}, (res1) => {
 			if (!res1 || !res1.data) {
 				return done();

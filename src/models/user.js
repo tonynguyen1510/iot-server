@@ -285,5 +285,22 @@ export default function (User) {
 			next();
 		}
 	});
+
+	User.beforeRemote('find', (ctx, modelInstance, next) => {
+		const filter = ctx.args.filter;
+
+		if (filter && filter.where && filter.where.search) {
+			const searchString = filter.where.search;
+
+			ctx.args.filter.where = {
+				or: [
+					{ fullName: { like: searchString } },
+					{ email: { like: searchString } },
+				],
+			};
+		}
+		next();
+	});
+
 }
 

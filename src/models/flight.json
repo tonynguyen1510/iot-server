@@ -65,6 +65,9 @@
 		},
 		"startingPrice": {
 			"type": "number"
+		},
+		"price": {
+			"type": "number"
 		}
 	},
 	"validations": [],
