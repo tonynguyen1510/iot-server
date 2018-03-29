@@ -33,7 +33,7 @@ export default function fetchGroupFeedFB(job, done) {
 
 		// FB.api(`${groupId}/feed?since=${unixtime}`, {
 		FB.api(`${groupId}/feed`, {
-			fields: ['message', 'from', 'story'],
+			fields: ['message', 'from{picture, name}', 'story'],
 			access_token: res.access_token,
 			unixtime,
 		}, (res1) => {
