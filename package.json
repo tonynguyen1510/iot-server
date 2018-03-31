@@ -11,7 +11,7 @@
     "start": "npm run dev",
     "dev": "nodemon . --exec babel-node",
     "prod": "NODE_ENV=production babel-node .",
-    "prod:pm2": "NODE_ENV=production pm2 start src/server.js --name chove.vn-api --interpreter babel-node"
+    "prod:pm2": "NODE_ENV=production pm2 start src/server.js --name chove-api --interpreter babel-node"
   },
   "dependencies": {
     "add": "^2.0.6",
