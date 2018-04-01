@@ -1,7 +1,7 @@
 import FB from 'fb';
 import { app } from '../server';
 
-const defaultAccessToken = 'EAAZAlZAgAfFCcBALLDHnynBY74AuNLrZCvTEqh3j08R2FGnmXlz7vUGSOW7BJGCTUKuZCdLEP7E4N5QBkQ22Ob4xUdCKlKYRUAtHU2YKy2TaolOmckNJ6eZCKYFR21aAsrbgjnxMKEFR9ebjYZAEF6WJF8EOFRrJ7PyLZAoZCpmYwKYlzmHnNhv6PU4DAYG59cMZD';
+const defaultAccessToken = 'EAAZAlZAgAfFCcBAFIHW1arqx2jl1cJJcYCMCw3u4LyLzsDhhZAaDkhPUpcgLi8A0BKrrvkcyW39nZBD1JHnz4F9gO0PtDcwenjDs3KQ22OIMMZACaDfGljPKW5Ah2OLfw7V8COSjGQPoqgZA154CTaJVFLVmovTrsZD';
 const groupId = '588371654842756';
 const clientId = '1800338623370279';
 const clientSecret = '5781762d36cadb9417fa63842708d4a9';
@@ -17,7 +17,7 @@ export default function fetchGroupFeedFB(job, done) {
 	const data = job.attrs.data || {};
 	const accessToken = data.fbAccessToken || defaultAccessToken;
 	const unixtime = data.unixtime || startOfDay(Date.now()).getTime() / 1000;
-	const Flight = app.models.Flight;
+	const FBFeed = app.models.FBFeed;
 
 	/* eslint-disable camelcase */
 	FB.api('oauth/access_token', {
@@ -26,31 +26,30 @@ export default function fetchGroupFeedFB(job, done) {
 		grant_type: 'fb_exchange_token',
 		fb_exchange_token: accessToken,
 	}, function (res) {
+		console.log('res', res);
 		job.attrs.data.fbAccessToken = res.access_token;
 		job.attrs.data.unixtime = new Date().getTime() / 1000;
 
-		// const unixtime = startOfDay(Date.now()).getTime() / 1000;
+		console.log('unixtime', unixtime);
 
 		// FB.api(`${groupId}/feed?since=${unixtime}`, {
 		FB.api(`${groupId}/feed`, {
 			fields: ['message', 'from{picture, name}', 'story'],
 			access_token: res.access_token,
-			unixtime,
 		}, (res1) => {
 			if (!res1 || !res1.data) {
 				return done();
 			}
 
 			Promise.all(res1.data.map((item) => {
-				const flightItem = {
-					feedFbId: item.id,
-					from: item.from,
-					status: 'Wait for approval',
+				const fbFeedItem = {
+					id: item.id,
+					author: item.from,
 					content: item.message || item.story,
 				};
 
 				return new Promise((resolve) => {
-					Flight.findOrCreate({ where: { feedFbId: flightItem.feedFbId } }, flightItem, (err, returnedFlight) => {
+					FBFeed.findOrCreate({ where: { feedFbId: fbFeedItem.feedFbId } }, fbFeedItem, (err, returnedFlight) => {
 						if (err) {
 							throw err;
 						}

@@ -49,7 +49,23 @@
 		"dataSource": "mongod",
 		"public": true
 	},
-	"Flight": {
+	"BuyTicket": {
+		"dataSource": "mongod",
+		"public": true
+	},
+	"SellTicket": {
+		"dataSource": "mongod",
+		"public": true
+	},
+	"BuyBid": {
+		"dataSource": "mongod",
+		"public": true
+	},
+	"SellBid": {
+		"dataSource": "mongod",
+		"public": true
+	},
+	"FBFeed": {
 		"dataSource": "mongod",
 		"public": true
 	},

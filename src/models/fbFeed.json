@@ -1,0 +1,31 @@
+{
+	"name": "FBFeed",
+	"base": "PersistedModel",
+	"idInjection": false,
+	"options": {
+		"validateUpsert": true
+	},
+	"properties": {
+		"createdAt": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"id": {
+			"type": "string",
+			"require": true
+		},
+		"author": {
+			"type": "object",
+			"require": true
+		},
+		"content": {
+			"type": "string",
+			"require": true
+		}
+	},
+	"validations": [],
+	"relations": {
+	},
+	"acls": [],
+	"methods": {}
+}

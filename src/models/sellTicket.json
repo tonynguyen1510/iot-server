@@ -1,0 +1,107 @@
+{
+	"name": "SellTicket",
+	"plural": "sellTickets",
+	"base": "PersistedModel",
+	"idInjection": true,
+	"options": {
+		"validateUpsert": true
+	},
+	"properties": {
+		"createdAt": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"updatedAt": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"images": {
+			"type": [
+				"string"
+			]
+		},
+		"content": {
+			"type": "string"
+		},
+		"dataType": {
+			"type": "string",
+			"default": "system"
+		},
+		"fbData": {
+			"type": "object"
+		},
+		"departure": {
+			"type": "string"
+		},
+		"destination": {
+			"type": "string"
+		},
+		"status": {
+			"type": "string",
+			"required": true
+		},
+		"startDate": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"endDate": {
+			"type": "date"
+		},
+		"flightType": {
+			"type": "string",
+			"required": true,
+			"default": "One way"
+		},
+		"seatType": {
+			"type": "string"
+		},
+		"packageWeight": {
+			"type": "string"
+		},
+		"seatCount": {
+			"type": "number"
+		},
+		"isBid": {
+			"type": "boolean",
+			"default": false
+		},
+		"bidDueDate": {
+			"type": "date"
+		},
+		"startingPrice": {
+			"type": "number"
+		},
+		"price": {
+			"type": "number"
+		}
+	},
+	"validations": [],
+	"relations": {
+		"bids": {
+			"type": "hasMany",
+			"model": "SellBid",
+			"foreignKey": "ticketBuyId",
+			"primaryKey": "id"
+		},
+		"currentBid": {
+			"type": "belongsTo",
+			"model": "SellBid",
+			"foreignKey": "currentBidId",
+			"primaryKey": "id"
+		},
+		"seller": {
+			"type": "belongsTo",
+			"model": "user",
+			"foreignKey": "sellerId",
+			"required": true
+		},
+		"buyer": {
+			"type": "belongsTo",
+			"model": "user",
+			"foreignKey": "buyerId",
+			"required": true
+		}
+	},
+	"acls": [],
+	"methods": {}
+}

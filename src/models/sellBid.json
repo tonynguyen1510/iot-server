@@ -1,34 +1,36 @@
 {
-	"name": "Tracking",
+	"name": "SellBid",
 	"base": "PersistedModel",
 	"idInjection": true,
 	"options": {
-	"validateUpsert": true
+		"validateUpsert": true
 	},
 	"properties": {
 		"createdAt": {
 			"type": "date",
 			"defaultFn": "now"
 		},
+		"price": {
+			"type": "number",
+			"required": true
+		},
 		"status": {
 			"type": "string",
-			"required": true
-		},
-		"type": {
-			"type": "string",
-			"required": true
-		},
-		"ticket": {
-			"type": "object",
 			"required": true
 		}
 	},
 	"validations": [],
 	"relations": {
-		"author": {
+		"bidder": {
 			"type": "belongsTo",
 			"model": "user",
-			"foreignKey": "userId",
+			"foreignKey": "bidderId",
+			"required": true
+		},
+		"ticket": {
+			"type": "belongsTo",
+			"model": "TicketSell",
+			"foreignKey": "ticketSellId",
 			"required": true
 		}
 	},
