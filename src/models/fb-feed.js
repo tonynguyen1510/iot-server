@@ -6,6 +6,6 @@
 * Created: 2018-04-02 10:41:48
 *------------------------------------------------------- */
 
-export default function (/* Tracking */) {
+export default function (/* FBFeed */) {
 
 }

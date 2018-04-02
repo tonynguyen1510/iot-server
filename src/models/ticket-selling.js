@@ -1,15 +1,22 @@
-export default function (BuyTicket) {
-
-	BuyTicket.observe('before save', function (ctx, next) {
-		const Tracking = BuyTicket.app.models.Tracking;
-		const Email = BuyTicket.app.models.Email;
-		const User = BuyTicket.app.models.user;
+export default function (TicketSelling) {
+	TicketSelling.observe('before save', function (ctx, next) {
+		const Tracking = TicketSelling.app.models.Tracking;
+		const Email = TicketSelling.app.models.Email;
+		const User = TicketSelling.app.models.user;
 		const newData = ctx.instance || ctx.data;
 		const oldData = ctx.currentInstance || {};
 		const isNewInstance = ctx.isNewInstance;
 		const closedSellerEmail = {
-			subject: '[Chove]Thông tin người mua vé',
-			html: 'Liên hệ với người mua vé thông qua email: abc@gmail hoặc SDT: 0123456789',
+			subject: '[Chove]Bạn đã bán vé thành công',
+			html: 'Bạn đã bán vé thành công',
+		};
+		const closedBuyerEmail = {
+			subject: '[Chove]Bạn đã mua vé thành công',
+			html: 'Bạn đã mua vé thành công',
+		};
+		const pendingBuyerEmail = {
+			subject: '[Chove]Thông tin thanh toán',
+			html: 'Vui lòng chuyển tiền vào tài khoản ABC để mua vé',
 		};
 
 		const _sendEmail = (userId, email) => {
@@ -50,22 +57,28 @@ export default function (BuyTicket) {
 			Tracking.create({
 				userId: newData.buyerId,
 				status: 'Closed',
-				type: 'Buy',
+				type: 'Sell',
 				ticket: { ...oldData.__data, ...newData },
 			});
 
-			_sendEmail(newData.sellerId, closedSellerEmail).then(() => {
+			Promise.all([
+				_sendEmail(newData.sellerId, closedSellerEmail),
+				_sendEmail(newData.buyerId, closedBuyerEmail),
+			]).then(() => {
 				next();
 			});
 		} else if (oldData.status !== 'Payment pending' && newData.status === 'Payment pending') {
 			Tracking.create({
 				userId: newData.buyerId,
 				status: 'Payment pending',
-				type: 'Buy',
+				type: 'Sell',
 				ticket: { ...oldData.__data, ...newData },
 			});
+			console.log('newData', newData);
 
-			next();
+			_sendEmail(newData.buyerId, pendingBuyerEmail).then(() => {
+				next();
+			});
 		} else {
 			next();
 		}

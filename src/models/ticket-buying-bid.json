@@ -1,9 +1,13 @@
 {
-	"name": "SellBid",
+	"name": "TicketBuyingBid",
+	"plural": "ticket-buying-bids",
 	"base": "PersistedModel",
 	"idInjection": true,
 	"options": {
 		"validateUpsert": true
+	},
+	"scope": {
+		"order": "createdAt DESC"
 	},
 	"properties": {
 		"createdAt": {
@@ -29,8 +33,8 @@
 		},
 		"ticket": {
 			"type": "belongsTo",
-			"model": "TicketSell",
-			"foreignKey": "ticketSellId",
+			"model": "TicketBuy",
+			"foreignKey": "ticketBuyId",
 			"required": true
 		}
 	},

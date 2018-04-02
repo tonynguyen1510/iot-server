@@ -1,23 +1,15 @@
-export default function (SellTicket) {
+export default function (TicketBuying) {
 
-	SellTicket.observe('before save', function (ctx, next) {
-		const Tracking = SellTicket.app.models.Tracking;
-		const Email = SellTicket.app.models.Email;
-		const User = SellTicket.app.models.user;
+	TicketBuying.observe('before save', function (ctx, next) {
+		const Tracking = TicketBuying.app.models.Tracking;
+		const Email = TicketBuying.app.models.Email;
+		const User = TicketBuying.app.models.user;
 		const newData = ctx.instance || ctx.data;
 		const oldData = ctx.currentInstance || {};
 		const isNewInstance = ctx.isNewInstance;
 		const closedSellerEmail = {
-			subject: '[Chove]Bạn đã bán vé thành công',
-			html: 'Bạn đã bán vé thành công',
-		};
-		const closedBuyerEmail = {
-			subject: '[Chove]Bạn đã mua vé thành công',
-			html: 'Bạn đã mua vé thành công',
-		};
-		const pendingBuyerEmail = {
-			subject: '[Chove]Thông tin thanh toán',
-			html: 'Vui lòng chuyển tiền vào tài khoản ABC để mua vé',
+			subject: '[Chove]Thông tin người mua vé',
+			html: 'Liên hệ với người mua vé thông qua email: abc@gmail hoặc SDT: 0123456789',
 		};
 
 		const _sendEmail = (userId, email) => {
@@ -58,28 +50,22 @@ export default function (SellTicket) {
 			Tracking.create({
 				userId: newData.buyerId,
 				status: 'Closed',
-				type: 'Sell',
+				type: 'Buy',
 				ticket: { ...oldData.__data, ...newData },
 			});
 
-			Promise.all([
-				_sendEmail(newData.sellerId, closedSellerEmail),
-				_sendEmail(newData.buyerId, closedBuyerEmail),
-			]).then(() => {
+			_sendEmail(newData.sellerId, closedSellerEmail).then(() => {
 				next();
 			});
 		} else if (oldData.status !== 'Payment pending' && newData.status === 'Payment pending') {
 			Tracking.create({
 				userId: newData.buyerId,
 				status: 'Payment pending',
-				type: 'Sell',
+				type: 'Buy',
 				ticket: { ...oldData.__data, ...newData },
 			});
-			console.log('newData', newData);
 
-			_sendEmail(newData.buyerId, pendingBuyerEmail).then(() => {
-				next();
-			});
+			next();
 		} else {
 			next();
 		}

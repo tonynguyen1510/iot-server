@@ -1,6 +1,6 @@
 {
-	"name": "BuyTicket",
-	"plural": "buyTickets",
+	"name": "TicketSelling",
+	"plural": "ticket-sellings",
 	"base": "PersistedModel",
 	"idInjection": true,
 	"options": {
@@ -27,30 +27,17 @@
 			"type": "string",
 			"default": "system"
 		},
+		"airline": {
+			"type": "string",
+			"default": "all"
+		},
 		"fbData": {
 			"type": "object"
-		},
-		"departure": {
-			"type": "string"
-		},
-		"destination": {
-			"type": "string"
-		},
-		"status": {
-			"type": "string",
-			"required": true
-		},
-		"startDate": {
-			"type": "date",
-			"defaultFn": "now"
-		},
-		"endDate": {
-			"type": "date"
 		},
 		"flightType": {
 			"type": "string",
 			"required": true,
-			"default": "One way"
+			"default": "oneWay"
 		},
 		"seatType": {
 			"type": "string"
@@ -73,19 +60,57 @@
 		},
 		"price": {
 			"type": "number"
+		},
+		"status": {
+			"type": "string",
+			"default": "open"
+		},
+		"trip": {
+			"type": {
+				"departure": {
+					"type": "string"
+				},
+				"destination": {
+					"type": "string"
+				},
+				"startDate": {
+					"type": "date",
+					"defaultFn": "now"
+				},
+				"startTime": {
+					"type": "string"
+				}
+			}
+		},
+		"tripBack": {
+			"type": {
+				"departure": {
+					"type": "string"
+				},
+				"destination": {
+					"type": "string"
+				},
+				"startDate": {
+					"type": "date",
+					"defaultFn": "now"
+				},
+				"startTime": {
+					"type": "string"
+				}
+			}
 		}
 	},
 	"validations": [],
 	"relations": {
 		"bids": {
 			"type": "hasMany",
-			"model": "BuyBid",
+			"model": "SellBid",
 			"foreignKey": "ticketBuyId",
 			"primaryKey": "id"
 		},
 		"currentBid": {
 			"type": "belongsTo",
-			"model": "BuyBid",
+			"model": "SellBid",
 			"foreignKey": "currentBidId",
 			"primaryKey": "id"
 		},

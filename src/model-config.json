@@ -49,19 +49,19 @@
 		"dataSource": "mongod",
 		"public": true
 	},
-	"BuyTicket": {
+	"TicketSelling": {
 		"dataSource": "mongod",
 		"public": true
 	},
-	"SellTicket": {
+	"TicketSellingBid": {
 		"dataSource": "mongod",
 		"public": true
 	},
-	"BuyBid": {
+	"TicketBuying": {
 		"dataSource": "mongod",
 		"public": true
 	},
-	"SellBid": {
+	"TicketBuyingBid": {
 		"dataSource": "mongod",
 		"public": true
 	},

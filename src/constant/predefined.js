@@ -9,6 +9,10 @@
 export default {
 	userStatus: ['active', 'inactive'],
 	userLoginType: ['email', 'facebook', 'google'],
-	flightStatus: ['Wait for approval', 'Open', 'Payment pending', 'Closed'],
-	flightType: ['Sell', 'Buy', 'Bid'],
+
+	ticketStatus: ['open', 'pending', 'closed'],
+	ticketFlightType: ['oneWay', 'roundTrip'],
+	ticketDataType: ['fb', 'system'],
+	ticketAirline: ['all', 'vna', 'vietjet', 'jetstar'],
+	ticketSeatType: ['promo', 'eco', 'skyboss'],
 };
