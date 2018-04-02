@@ -69,6 +69,10 @@
 		"dataSource": "mongod",
 		"public": true
 	},
+	"Flight": {
+		"dataSource": "mongod",
+		"public": true
+	},
 	"Bid": {
 		"dataSource": "mongod",
 		"public": true
