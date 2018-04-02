@@ -10,8 +10,8 @@ import buyRawData from '../../mockData/buy-data.json';
 
 export default (app) => {
 	const User = app.models.user;
-	const BuyTicket = app.models.BuyTicket;
-	const SellTicket = app.models.SellTicket;
+	const TicketBuying = app.models.TicketBuying;
+	const TicketSelling = app.models.TicketSelling;
 
 	User.find({}, (err, resultsCheck) => {
 		if (err) {
@@ -26,22 +26,54 @@ export default (app) => {
 				const userIds = users.map((user) => user.id);
 
 				const buyData = buyRawData.map((item) => ({
-					...item,
-					startDate: new Date(item.startDate),
-					endDate: new Date(item.endDate),
-					sellerId: userIds[Math.floor(Math.random() * 100)],
-					buyerId: userIds[Math.floor(Math.random() * 100)],
+					content: item.content,
+					flightType: item.flightType,
+					contactId: item.status === 'open' ? undefined : userIds[Math.floor(Math.random() * 100)],
+					creatorId: userIds[Math.floor(Math.random() * 100)],
+					airline: 'vna',
+					packageWeight: '7',
+					seatType: 'promo',
+					status: item.status,
+					price: 1200000,
+					trip: {
+						departure: item.departure,
+						destination: item.destination,
+						startDate: new Date(item.startDate),
+						startTime: '12:00'
+					},
+					tripBack: item.flightType === 'oneWay' ? undefined : {
+						departure: item.destination,
+						destination: item.departure,
+						startDate: new Date(item.endDate),
+						startTime: '12:00'
+					}
 				}));
 
 				const sellData = buyRawData.map((item) => ({
-					...item,
-					startDate: new Date(item.startDate),
-					endDate: new Date(item.endDate),
-					sellerId: userIds[Math.floor(Math.random() * 100)],
-					buyerId: userIds[Math.floor(Math.random() * 100)],
+					content: item.content,
+					flightType: item.flightType,
+					contactId: item.status === 'open' ? undefined : userIds[Math.floor(Math.random() * 100)],
+					creatorId: userIds[Math.floor(Math.random() * 100)],
+					airline: 'vna',
+					packageWeight: '7',
+					seatType: 'promo',
+					status: item.status,
+					price: 1200000,
+					trip: {
+						departure: item.departure,
+						destination: item.destination,
+						startDate: new Date(item.startDate),
+						startTime: '12:00'
+					},
+					tripBack: item.flightType === 'oneWay' ? undefined : {
+						departure: item.destination,
+						destination: item.departure,
+						startDate: new Date(item.endDate),
+						startTime: '12:00'
+					}
 				}));
 
-				BuyTicket.create(buyData, (err2) => {
+				TicketBuying.create(buyData, (err2) => {
 					if (err2) {
 						console.log('erro', err2);
 						throw err2;
@@ -50,7 +82,7 @@ export default (app) => {
 					console.log('Seed buy success');
 				});
 
-				SellTicket.create(sellData, (err2) => {
+				TicketSelling.create(sellData, (err2) => {
 					if (err2) {
 						console.log('erro', err2);
 						throw err2;

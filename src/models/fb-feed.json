@@ -16,7 +16,8 @@
 		},
 		"id": {
 			"type": "string",
-			"require": true
+			"require": true,
+			"id": true
 		},
 		"author": {
 			"type": "object",

@@ -1,48 +1,46 @@
-// /* --------------------------------------------------------
-// * Author Trần Đức Tiến
-// * Email ductienas@gmail.com
-// * Phone 0972970075
-// *
-// * Created: 2017-12-01 15:56:42
-// *------------------------------------------------------- */
+/* --------------------------------------------------------
+* Author Trần Đức Tiến
+* Email ductienas@gmail.com
+* Phone 0972970075
+*
+* Created: 2017-12-01 15:56:42
+*------------------------------------------------------- */
 
-// export default (app) => {
-// 	const User = app.models.user;
-// 	const Role = app.models.Role;
-// 	const RoleMapping = app.models.RoleMapping;
+export default (app) => {
+	const User = app.models.user;
+	const Role = app.models.Role;
+	const RoleMapping = app.models.RoleMapping;
 
-// 	User.find({}, (errCheck, resultsCheck) => {
-// 		if (resultsCheck.length === 0) {
-// 			User.create([
-// 				{ fullName: 'Admin', email: 'admin@gmail.com', username: 'admin', password: '123456', emailVerified: true, role: 'admin' }
-// 			], (err, users) => {
-// 				if (err) {
-// 					throw err;
-// 				}
+	User.findOne({ where: { email: 'admin@chove.vn' } }, (errCheck, userCheck) => {
+		if (errCheck) {
+			throw errCheck;
+		}
 
-// 				console.log('Created super admin:', users);
+		if (userCheck) {
+			return ;
+		}
 
-// 				// create the admin role
-// 				Role.create({
-// 					name: 'admin'
-// 				}, (errRole, role) => {
-// 					// if(err) throw err;
+		User.create({ fullName: 'Admin', email: 'admin@chove.vn', username: 'admin', password: '123456', emailVerified: true, role: 'admin' }, (err, user) => {
+			if (err) {
+				throw err;
+			}
 
-// 					console.log('Created role:', role);
+			Role.create({
+				name: 'admin'
+			}, (errRole, role) => {
+				// if(err) throw err;
 
-// 					// make bob an admin
-// 					users.forEach((el) => {
-// 						role.principals.create({
-// 							principalType: RoleMapping.USER,
-// 							principalId: el.id
-// 						}, (errMap, principal) => {
-// 							// if(err) throw err;
+				console.log('Created role:', role);
 
-// 							console.log('Created principal:', principal);
-// 						});
-// 					});
-// 				});
-// 			});
-// 		}
-// 	});
-// };
+				role.principals.create({
+					principalType: RoleMapping.USER,
+					principalId: user.id
+				}, (errMap, principal) => {
+					// if(err) throw err;
+
+					console.log('Created principal:', principal);
+				});
+			});
+		});
+	});
+};

@@ -34,9 +34,6 @@
 			"type": "string",
 			"default": "all"
 		},
-		"fbData": {
-			"type": "object"
-		},
 		"flightType": {
 			"type": "string",
 			"required": true,
@@ -127,6 +124,12 @@
 			"type": "belongsTo",
 			"model": "user",
 			"foreignKey": "creatorId",
+			"required": true
+		},
+		"fbFeed": {
+			"type": "belongsTo",
+			"model": "FBFeed",
+			"foreignKey": "fbFeedId",
 			"required": true
 		}
 	},
