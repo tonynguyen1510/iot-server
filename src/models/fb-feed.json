@@ -1,5 +1,6 @@
 {
 	"name": "FBFeed",
+	"plural": "fb-feeds",
 	"base": "PersistedModel",
 	"idInjection": false,
 	"options": {

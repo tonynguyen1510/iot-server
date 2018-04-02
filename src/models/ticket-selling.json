@@ -6,6 +6,9 @@
 	"options": {
 		"validateUpsert": true
 	},
+	"scope": {
+		"order": "createdAt DESC"
+	},
 	"properties": {
 		"createdAt": {
 			"type": "date",
