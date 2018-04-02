@@ -46,7 +46,7 @@
 			"type": "string"
 		},
 		"packageWeight": {
-			"type": "string"
+			"type": "number"
 		},
 		"seatCount": {
 			"type": "number"
@@ -117,16 +117,16 @@
 			"foreignKey": "currentBidId",
 			"primaryKey": "id"
 		},
-		"seller": {
+		"contact": {
 			"type": "belongsTo",
 			"model": "user",
-			"foreignKey": "sellerId",
+			"foreignKey": "contactId",
 			"required": true
 		},
-		"buyer": {
+		"creator": {
 			"type": "belongsTo",
 			"model": "user",
-			"foreignKey": "buyerId",
+			"foreignKey": "creatorId",
 			"required": true
 		}
 	},
