@@ -14,7 +14,7 @@ import login from 'src/utils/login';
 import predefined from 'src/constant/predefined';
 
 const auth = new GoogleAuth();
-const client = new auth.OAuth2(['671782562952-rhmgci05iqn7bfg7l380c24ftb2kq5r5.apps.googleusercontent.com'], 'R8lAFs330N6_SlL85qAKhBnD', '');
+const client = new auth.OAuth2(['314929847304-blffjtcncvq4vbc92msgojprhqnudu8i.apps.googleusercontent.com'], 'YIk4yZaKBMBynZentZX2MnLl', '');
 
 export default function (User) {
 	User.validatesInclusionOf('loginType', { in: predefined.userLoginType });
