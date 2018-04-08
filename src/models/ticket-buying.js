@@ -46,7 +46,7 @@ export default function (TicketBuying) {
 			return next();
 		}
 
-		if (oldData.status !== 'Closed' && newData.status === 'Closed') {
+		if (oldData.status !== 'closed' && newData.status === 'closed') {
 			Tracking.create({
 				userId: newData.buyerId,
 				status: 'Closed',
@@ -57,7 +57,7 @@ export default function (TicketBuying) {
 			_sendEmail(newData.sellerId, closedSellerEmail).then(() => {
 				next();
 			});
-		} else if (oldData.status !== 'Payment pending' && newData.status === 'Payment pending') {
+		} else if (oldData.status !== 'pending' && newData.status === 'pending') {
 			Tracking.create({
 				userId: newData.buyerId,
 				status: 'Payment pending',
@@ -69,5 +69,21 @@ export default function (TicketBuying) {
 		} else {
 			next();
 		}
+	});
+
+	TicketBuying.beforeRemote('find', (ctx, ticketBuying, next) => {
+		const { where } = ctx.args.filter;
+
+		if (where['trip.startDate']) {
+			where['trip.startDate'].gte = new Date(where['trip.startDate'].gte);
+			where['trip.startDate'].lte = new Date(where['trip.startDate'].lte);
+		}
+
+		if (where['tripBack.startDate']) {
+			where['tripBack.startDate'].gte = new Date(where['tripBack.startDate'].gte);
+			where['tripBack.startDate'].lte = new Date(where['tripBack.startDate'].lte);
+		}
+
+		next();
 	});
 }

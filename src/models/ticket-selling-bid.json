@@ -31,10 +31,10 @@
 			"foreignKey": "bidderId",
 			"required": true
 		},
-		"ticket": {
+		"ticketSelling": {
 			"type": "belongsTo",
-			"model": "TicketSell",
-			"foreignKey": "ticketSellId",
+			"model": "TicketSelling",
+			"foreignKey": "ticketSellingId",
 			"required": true
 		}
 	},

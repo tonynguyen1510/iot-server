@@ -1,12 +1,15 @@
 import { MongoClient } from 'mongodb';
 import Agenda from 'agenda';
 import fetchGroupFeedFB from './fetchGroupFeedFB';
+import { updateStatusPending, updateBidPrice } from './bid';
 
 const cronjob = {
 	_defineJobs() {
 		const agenda = this._agenda;
 
 		agenda.define('facebook.group-feed', fetchGroupFeedFB);
+		agenda.define('bid.update-status-pending', updateStatusPending);
+		agenda.define('bid.update-bid-price', updateBidPrice);
 	},
 
 	_initDefaultJobs(db) {
@@ -19,6 +22,18 @@ const cronjob = {
 				db.collection('cronjob').updateOne({ name: 'facebook.group-feed' }, { $unset: { 'lockedAt': 1 } });
 			}
 		});
+	},
+
+	schedule(when, name, data, cb) {
+		const agenda = this._agenda;
+
+		agenda.schedule(when, name, data, cb);
+	},
+
+	every(interval, name, data, cb) {
+		const agenda = this._agenda;
+
+		agenda.every(interval, name, data, cb);
 	},
 
 	init() {

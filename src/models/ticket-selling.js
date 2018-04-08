@@ -1,3 +1,5 @@
+import cronjob from '../utils/cronjob';
+
 export default function (TicketSelling) {
 	TicketSelling.observe('before save', function (ctx, next) {
 		const Tracking = TicketSelling.app.models.Tracking;
@@ -53,34 +55,60 @@ export default function (TicketSelling) {
 			return next();
 		}
 
-		if (oldData.status !== 'Closed' && newData.status === 'Closed') {
+		if (oldData.status !== 'closed' && newData.status === 'closed') {
 			Tracking.create({
-				userId: newData.buyerId,
+				userId: newData.contactId,
 				status: 'Closed',
 				type: 'Sell',
 				ticket: { ...oldData.__data, ...newData },
 			});
 
 			Promise.all([
-				_sendEmail(newData.sellerId, closedSellerEmail),
-				_sendEmail(newData.buyerId, closedBuyerEmail),
+				_sendEmail(newData.creatorId, closedSellerEmail),
+				_sendEmail(newData.contactId, closedBuyerEmail),
 			]).then(() => {
 				next();
 			});
-		} else if (oldData.status !== 'Payment pending' && newData.status === 'Payment pending') {
+		} else if (oldData.status !== 'pending' && newData.status === 'pending') {
 			Tracking.create({
-				userId: newData.buyerId,
+				userId: newData.contactId,
 				status: 'Payment pending',
 				type: 'Sell',
 				ticket: { ...oldData.__data, ...newData },
 			});
-			console.log('newData', newData);
 
-			_sendEmail(newData.buyerId, pendingBuyerEmail).then(() => {
+			_sendEmail(newData.contactId, pendingBuyerEmail).then(() => {
+				next();
+			});
+		} else if (oldData.isBid && oldData.status === 'pending' && (String(newData.contactId) !== String(oldData.contactId) || newData.price !== oldData.price)){
+			_sendEmail(newData.contactId, pendingBuyerEmail).then(() => {
 				next();
 			});
 		} else {
 			next();
 		}
+	});
+
+	TicketSelling.beforeRemote('find', (ctx, ticketSelling, next) => {
+		const { where } = ctx.args.filter;
+
+		if (where['trip.startDate']) {
+			where['trip.startDate'].gte = new Date(where['trip.startDate'].gte);
+			where['trip.startDate'].lte = new Date(where['trip.startDate'].lte);
+		}
+
+		if (where['tripBack.startDate']) {
+			where['tripBack.startDate'].gte = new Date(where['tripBack.startDate'].gte);
+			where['tripBack.startDate'].lte = new Date(where['tripBack.startDate'].lte);
+		}
+
+		next();
+	});
+
+	TicketSelling.afterRemote('create', (ctx, ticketSelling, next) => {
+		if (ticketSelling.isBid) {
+			cronjob.schedule(ticketSelling.bidDueDate, 'bid.update-status-pending', { ticketSellingId: ticketSelling.id, type: 'selling-bid' });
+		}
+		next();
 	});
 }

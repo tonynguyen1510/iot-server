@@ -104,8 +104,8 @@
 	"relations": {
 		"bids": {
 			"type": "hasMany",
-			"model": "SellBid",
-			"foreignKey": "ticketBuyId",
+			"model": "TicketSellingBid",
+			"foreignKey": "ticketSellingId",
 			"primaryKey": "id"
 		},
 		"currentBid": {
