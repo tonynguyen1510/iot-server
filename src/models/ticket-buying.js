@@ -48,9 +48,10 @@ export default function (TicketBuying) {
 
 		if (oldData.status !== 'closed' && newData.status === 'closed') {
 			Tracking.create({
-				userId: newData.buyerId,
-				status: 'Closed',
-				type: 'Buy',
+				userId: newData.contactId,
+				action: newData.isBid ? 'bid-sell' : 'sell',
+				status: 'closed',
+				type: 'ticket-buying',
 				ticket: { ...oldData.__data, ...newData },
 			});
 
@@ -58,12 +59,12 @@ export default function (TicketBuying) {
 				next();
 			});
 		} else if (oldData.status !== 'pending' && newData.status === 'pending') {
-			Tracking.create({
-				userId: newData.buyerId,
-				status: 'Payment pending',
-				type: 'Buy',
-				ticket: { ...oldData.__data, ...newData },
-			});
+			// Tracking.create({
+			// 	userId: newData.buyerId,
+			// 	status: 'Payment pending',
+			// 	type: 'Buy',
+			// 	ticket: { ...oldData.__data, ...newData },
+			// });
 
 			next();
 		} else {
