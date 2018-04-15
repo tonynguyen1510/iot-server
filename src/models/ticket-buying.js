@@ -87,4 +87,25 @@ export default function (TicketBuying) {
 
 		next();
 	});
+
+	TicketBuying.beforeRemote('create', (ctx, ticket, next) => {
+		const FBFeed = TicketBuying.app.models.FBFeed;
+		const { data: ticketBuying = {} } = ctx.args;
+
+		if (ticketBuying.fbFeedId) {
+			FBFeed.findById(ticketBuying.fbFeedId, (err, fbFeed) => {
+				if (err) {
+					throw err;
+				}
+				console.log('fbFeed', fbFeed);
+				ticketBuying.fbFeed = fbFeed.toObject();
+
+				fbFeed.status = 'approved';
+
+				fbFeed.save({}, () => next());
+			});
+		} else {
+			next();
+		}
+	});
 }

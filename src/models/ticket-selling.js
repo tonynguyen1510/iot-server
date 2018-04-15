@@ -114,4 +114,20 @@ export default function (TicketSelling) {
 		next();
 	});
 
+	TicketSelling.beforeRemote('create', (ctx, ticketSelling, next) => {
+		const FBFeed = TicketSelling.app.models.FBFeed;
+
+		if (ticketSelling.fbFeedId) {
+			FBFeed.findById(ticketSelling.fbFeedId, (fbFeed) => {
+				ticketSelling.fbFeed = fbFeed.toObject();
+
+				fbFeed.status = 'approved';
+
+				fbFeed.save({}, () => next());
+			});
+		} else {
+			next();
+		}
+	});
+
 }
