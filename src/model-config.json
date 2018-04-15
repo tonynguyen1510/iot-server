@@ -80,5 +80,9 @@
 	"Tracking": {
 		"dataSource": "mongod",
 		"public": true
+	},
+	"Rating": {
+		"dataSource": "mongod",
+		"public": true
 	}
 }

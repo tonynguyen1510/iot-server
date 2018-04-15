@@ -48,9 +48,10 @@ export default function (TicketBuying) {
 
 		if (oldData.status !== 'closed' && newData.status === 'closed') {
 			Tracking.create({
-				userId: newData.buyerId,
-				status: 'Closed',
-				type: 'Buy',
+				userId: newData.contactId,
+				action: newData.isBid ? 'bid-sell' : 'sell',
+				status: 'closed',
+				type: 'ticket-buying',
 				ticket: { ...oldData.__data, ...newData },
 			});
 
@@ -58,12 +59,12 @@ export default function (TicketBuying) {
 				next();
 			});
 		} else if (oldData.status !== 'pending' && newData.status === 'pending') {
-			Tracking.create({
-				userId: newData.buyerId,
-				status: 'Payment pending',
-				type: 'Buy',
-				ticket: { ...oldData.__data, ...newData },
-			});
+			// Tracking.create({
+			// 	userId: newData.buyerId,
+			// 	status: 'Payment pending',
+			// 	type: 'Buy',
+			// 	ticket: { ...oldData.__data, ...newData },
+			// });
 
 			next();
 		} else {
@@ -85,5 +86,26 @@ export default function (TicketBuying) {
 		}
 
 		next();
+	});
+
+	TicketBuying.beforeRemote('create', (ctx, ticket, next) => {
+		const FBFeed = TicketBuying.app.models.FBFeed;
+		const { data: ticketBuying = {} } = ctx.args;
+
+		if (ticketBuying.fbFeedId) {
+			FBFeed.findById(ticketBuying.fbFeedId, (err, fbFeed) => {
+				if (err) {
+					throw err;
+				}
+				console.log('fbFeed', fbFeed);
+				ticketBuying.fbFeed = fbFeed.toObject();
+
+				fbFeed.status = 'approved';
+
+				fbFeed.save({}, () => next());
+			});
+		} else {
+			next();
+		}
 	});
 }
