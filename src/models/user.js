@@ -8,6 +8,7 @@
 
 import { FB } from 'fb';
 import GoogleAuth from 'google-auth-library';
+import Zalo from 'zalo-sdk';
 // import axios from 'axios';
 
 import login from 'src/utils/login';
@@ -15,6 +16,12 @@ import predefined from 'src/constant/predefined';
 
 const auth = new GoogleAuth();
 const client = new auth.OAuth2(['314929847304-blffjtcncvq4vbc92msgojprhqnudu8i.apps.googleusercontent.com'], 'YIk4yZaKBMBynZentZX2MnLl', '');
+
+const ZSClient = new Zalo.ZaloSocial({
+	appId: '92423462607218680',
+	redirectUri: 'http://localhost:3004/login-zalo',
+	appSecret: 'TGt4bW5cO44nHiw3JawE',
+});
 
 export default function (User) {
 	User.validatesInclusionOf('loginType', { in: predefined.userLoginType });
@@ -84,6 +91,92 @@ export default function (User) {
 	});
 
 	User.login = login;
+
+	User.loginZalo = (accessToken, email, username, ttl, next) => {
+		ZSClient.getAccessTokenByOauthCode(accessToken, function (response) {
+			if (response && response.access_token) {
+				ZSClient.setAccessToken(response.access_token);
+				ZSClient.api('me', 'GET', { fields: 'id, name, birthday, gender, picture, phone' }, function (userZalo) {
+					if (userZalo && userZalo.id) {
+						User.findOne({ where: { zaloId: userZalo.id } }, (err, userCheck) => {
+							if (err) {
+								return next({ ...err });
+							}
+
+							if (userCheck && userCheck.email) {
+								User.login({
+									email: userCheck.email,
+									password: passwordDefault,
+									ttl
+								}, 'user', function (errLogin, token) {
+									if (errLogin) {
+										return next({ ...errLogin });
+									}
+
+									return next(null, token);
+								});
+							} else {
+								if (email && username) {
+									User.findOne({ where: { email } }, (errr, userCheckEmail) => {
+										if (errr) {
+											return next({ ...errr });
+										}
+										if (userCheckEmail) {
+											return next({ message: 'Email already exists!' });
+										}
+										User.findOne({ where: { username } }, (errrr, userCheckUsername) => {
+											if (errrr) {
+												return next({ ...errrr });
+											}
+											if (userCheckUsername) {
+												return next({ message: 'Username already exists!' });
+											}
+											const userData = {
+												fullName: userZalo.name || '',
+												gender: userZalo.gender || '',
+												zaloId: userZalo.id,
+												loginType: 'zalo',
+												avatar: userZalo.picture && userZalo.picture.data && userZalo.picture.data.url,
+												email,
+												username,
+												password: passwordDefault,
+											};
+
+											User.create(userData, (errCreate, userCreate) => {
+												if (err) {
+													return next({ ...errCreate });
+												}
+
+												sendMailVerify(userCreate);
+
+												User.login({
+													email: userCreate.email,
+													password: passwordDefault,
+													ttl
+												}, 'user', function (errLogin, token) {
+													if (errLogin) {
+														return next({ ...errLogin });
+													}
+
+													return next(null, token);
+												});
+											});
+										});
+									});
+								} else {
+									return next(null, { code: 'additionalEmail' });
+								}
+							}
+						});
+					} else {
+						next('Đăng nhập không thành công');
+					}
+				});
+			} else {
+				return next('AccessToken không hợp lệ', response);
+			}
+		});
+	};
 
 	User.loginFacebook = (accessToken, ttl, next) => {
 		FB.api('me', { fields: 'email,name,gender,picture,link', 'access_token': accessToken }, function (res) {

@@ -33,8 +33,14 @@
 			"type": "string",
 			"default": "email"
 		},
-		"fbVerified": {
-			"type": "object"
+		"facebookId": {
+			"type": "string"
+		},
+		"googleId": {
+			"type": "string"
+		},
+		"zaloId": {
+			"type": "string"
 		},
 		"avatar": {
 			"type": "string"
@@ -68,9 +74,6 @@
 		"geoLocation": {
 			"type": "geopoint",
 			"index": true
-		},
-		"ggVerified": {
-			"type": "object"
 		},
 		"desc": {
 			"type": "string",
@@ -226,6 +229,12 @@
 			"principalType": "ROLE",
 			"principalId": "$everyone",
 			"permission": "ALLOW",
+			"property": "loginZalo"
+		},
+		{
+			"principalType": "ROLE",
+			"principalId": "$everyone",
+			"permission": "ALLOW",
 			"property": "loginGoogle"
 		},
 		{
@@ -248,6 +257,43 @@
 		}
 	],
 	"methods": {
+		"loginZalo": {
+			"accepts": [
+				{
+					"arg": "accessToken",
+					"type": "string",
+					"description": "AccessToken from Zalo",
+					"required": true
+				},
+				{
+					"arg": "email",
+					"type": "string",
+					"description": "Email from user"
+				},
+				{
+					"arg": "username",
+					"type": "string",
+					"description": "Username from user"
+				},
+				{
+					"arg": "ttl",
+					"type": "number",
+					"description": "Time to live (seconds) (2 weeks by default)"
+				}
+			],
+			"returns": {
+				"arg": "result",
+				"type": "object",
+				"root": true
+			},
+			"description": "Login Zalo",
+			"http": [
+				{
+					"path": "/login-zalo",
+					"verb": "post"
+				}
+			]
+		},
 		"loginFacebook": {
 			"accepts": [
 				{
