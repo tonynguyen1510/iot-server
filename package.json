@@ -34,7 +34,7 @@
     "serve-favicon": "^2.0.1",
     "slugify": "^1.2.9",
     "strong-error-handler": "^2.0.0",
-    "yarn": "^1.5.1"
+    "zalo-sdk": "^2.0.4"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

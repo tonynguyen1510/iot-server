@@ -8,7 +8,7 @@
 
 export default {
 	userStatus: ['active', 'inactive'],
-	userLoginType: ['email', 'facebook', 'google'],
+	userLoginType: ['email', 'facebook', 'google', 'zalo'],
 
 	ticketStatus: ['open', 'pending', 'closed'],
 	ticketFlightType: ['oneWay', 'roundTrip'],
