@@ -1,5 +1,4 @@
 export default function (TicketBuying) {
-
 	TicketBuying.observe('before save', function (ctx, next) {
 		const Tracking = TicketBuying.app.models.Tracking;
 		const Email = TicketBuying.app.models.Email;
@@ -7,40 +6,6 @@ export default function (TicketBuying) {
 		const newData = ctx.instance || ctx.data;
 		const oldData = ctx.currentInstance || {};
 		const isNewInstance = ctx.isNewInstance;
-		const closedSellerEmail = {
-			subject: '[Chove]Thông tin người mua vé',
-			html: 'Liên hệ với người mua vé thông qua email: abc@gmail hoặc SDT: 0123456789',
-		};
-
-		const _sendEmail = (userId, email) => {
-			if (!userId) {
-				return Promise.resolve(true);
-			}
-
-			return new Promise((resolve) => {
-				User.findById(userId, (errUser, user) => {
-					if (errUser) {
-						console.log('can not find user');
-						throw errUser;
-					}
-
-					Email.send({
-						to: 'maihuunhan30071992@gmail.com',
-						// to: user.email,
-						from: 'noreply@chove.vn',
-						subject: email.subject,
-						html: email.html,
-					}, (err) => {
-						if (err) {
-							console.log('send email error', err);
-							throw err;
-						}
-						console.log('send email success');
-						resolve(true);
-					});
-				});
-			});
-		};
 
 		if (isNewInstance) {
 			return next();
@@ -55,8 +20,50 @@ export default function (TicketBuying) {
 				ticket: { ...oldData.__data, ...newData },
 			});
 
-			_sendEmail(newData.sellerId, closedSellerEmail).then(() => {
-				next();
+			if (newData.dataType === 'fb') {
+				return next();
+			}
+
+			Promise.all([
+				new Promise((resolve) => {
+					User.findById(newData.contactId, (errUser, contactor) => {
+						if (errUser) {
+							throw errUser;
+						}
+						resolve(contactor);
+					});
+				}),
+				new Promise((resolve) => {
+					User.findById(newData.creatorId, (errUser, creator) => {
+						if (errUser) {
+							throw errUser;
+						}
+						resolve(creator);
+					});
+				}),
+
+			]).then(([contactor, creator]) => {
+				Email.send({
+					to: 'maihuunhan30071992@gmail.com',
+					// to: creator.email,
+					from: 'noreply@chove.vn',
+					subject: '[Chove]Thông tin người mua vé',
+					html: `
+						<div style="text-align: auto">
+							<p>Vui lòng liên hệ với người mua vé thông qua</p>
+							<ul>
+								<li>Email: ${contactor.email}</li>
+								<li>SDT: ${contactor.phone}</li>
+							</ul>
+						</div>
+					`,
+				}, (errEmail) => {
+					if (errEmail) {
+						console.log('send email errEmailor', errEmail);
+						throw errEmail;
+					}
+					next();
+				});
 			});
 		} else if (oldData.status !== 'pending' && newData.status === 'pending') {
 			// Tracking.create({
@@ -74,17 +81,88 @@ export default function (TicketBuying) {
 
 	TicketBuying.beforeRemote('find', (ctx, ticketBuying, next) => {
 		const { where } = ctx.args.filter;
+		const newWhere = {
+			and: Object.keys(where).map((filterName) => {
+				const filterValue = where[filterName];
+
+				if (filterName.includes('trip')) {
+					return {};
+				}
+
+				return { [filterName]: filterValue };
+			}),
+		};
 
 		if (where['trip.startDate']) {
-			where['trip.startDate'].gte = new Date(where['trip.startDate'].gte);
-			where['trip.startDate'].lte = new Date(where['trip.startDate'].lte);
+			// where['trip.startDate'].gte = new Date(where['trip.startDate'].gte);
+			// where['trip.startDate'].lte = new Date(where['trip.startDate'].lte);
+
+			newWhere.and.push({
+				'trip.startDate': {
+					gte: new Date(where['trip.startDate'].gte),
+				},
+			});
+			newWhere.and.push({
+				'trip.startDate': {
+					lte: new Date(where['trip.startDate'].lte),
+				},
+			});
+		}
+
+		if (where.trip && where.trip.startDate) {
+			newWhere.and.push({
+				'trip.startDate': {
+					gte: new Date(where.trip.startDate.gte),
+				},
+			});
+			newWhere.and.push({
+				'trip.startDate': {
+					lte: new Date(where.trip.startDate.lte),
+				},
+			});
+			// where['trip.startDate'] = {};
+			// where['trip.startDate'].gte = new Date(where.trip.startDate.gte);
+			// where['trip.startDate'].lte = new Date(where.trip.startDate.gte);
+			// where.trip = undefined;
 		}
 
 		if (where['tripBack.startDate']) {
-			where['tripBack.startDate'].gte = new Date(where['tripBack.startDate'].gte);
-			where['tripBack.startDate'].lte = new Date(where['tripBack.startDate'].lte);
+			newWhere.and.push({
+				'tripBack.startDate': {
+					gte: new Date(where['tripBack.startDate'].gte),
+				},
+			});
+			newWhere.and.push({
+				'tripBack.startDate': {
+					lte: new Date(where['tripBack.startDate'].lte),
+				},
+			});
+			// where['tripBack.startDate'].gte = new Date(where['tripBack.startDate'].gte);
+			// where['tripBack.startDate'].lte = new Date(where['tripBack.startDate'].lte);
 		}
 
+		if (where.tripBack && where.tripBack.startDate) {
+			newWhere.and.push({
+				'tripBack.startDate': {
+					gte: new Date(where.tripBack.startDate.gte),
+				},
+			});
+			newWhere.and.push({
+				'tripBack.startDate': {
+					lte: new Date(where.tripBack.startDate.lte),
+				},
+			});
+			// where['trip.startDate'] = {};
+			// where['trip.startDate'].gte = new Date(where.trip.startDate.gte);
+			// where['trip.startDate'].lte = new Date(where.trip.startDate.gte);
+			// where.trip = undefined;
+		}
+
+		if (!newWhere.and.length) {
+			newWhere.and = undefined;
+		}
+		ctx.args.filter.where = newWhere;
+		console.log('ctx', ctx.args.filter.where.and);
 		next();
 	});
 

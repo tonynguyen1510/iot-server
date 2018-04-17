@@ -302,5 +302,34 @@ export default function (User) {
 		next();
 	});
 
+	User.remindUser = (id, next) => {
+		console.log('asdasdasdasdasdasdasdas', id);
+		const Email = User.app.models.Email;
+
+		User.findById(id, (errUser, user) => {
+			if (errUser) {
+				console.log('errUser', errUser);
+				throw errUser;
+			}
+
+			Email.send({
+				to: 'maihuunhan30071992@gmail.com',
+				// to: user.email,
+				from: 'noreply@chove.vn',
+				subject: '[Chove]Yêu cầu cung cấp thông tin người dùng',
+				html: `
+					<h1>Chào ${user.fullName}</h1>
+					<p>Để thuận tiện giao dịch trên hệ thống chove.vn, bạn vui lòng cung cấp các thông tin yêu cầu trên trang web chove.vn</p>
+					<p>Cảm ơn</p>
+				`,
+			}, (err) => {
+				if (err) {
+					console.log('send email error', err);
+					throw err;
+				}
+				next();
+			});
+		});
+	};
 }
 

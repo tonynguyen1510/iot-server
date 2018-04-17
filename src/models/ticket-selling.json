@@ -79,6 +79,13 @@
 				},
 				"startTime": {
 					"type": "string"
+				},
+				"endDate": {
+					"type": "date",
+					"defaultFn": "now"
+				},
+				"endTime": {
+					"type": "string"
 				}
 			}
 		},
@@ -95,6 +102,13 @@
 					"defaultFn": "now"
 				},
 				"startTime": {
+					"type": "string"
+				},
+				"endDate": {
+					"type": "date",
+					"defaultFn": "now"
+				},
+				"endTime": {
 					"type": "string"
 				}
 			}
@@ -134,5 +148,23 @@
 		}
 	},
 	"acls": [],
-	"methods": {}
+	"methods": {
+		"resendTicket": {
+			"accepts": [
+				{
+					"arg": "id",
+					"type": "string",
+					"description": "ticket id",
+					"required": true
+				}
+			],
+			"description": "Resend ticket",
+			"http": [
+				{
+					"path": "/resend-ticket",
+					"verb": "post"
+				}
+			]
+		}
+	}
 }

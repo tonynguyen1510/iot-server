@@ -226,6 +226,12 @@
 			"principalType": "ROLE",
 			"principalId": "$everyone",
 			"permission": "ALLOW",
+			"property": "remindUser"
+		},
+		{
+			"principalType": "ROLE",
+			"principalId": "$everyone",
+			"permission": "ALLOW",
 			"property": "loginGoogle"
 		},
 		{
@@ -298,6 +304,23 @@
 			"http": [
 				{
 					"path": "/login-google",
+					"verb": "post"
+				}
+			]
+		},
+		"remindUser": {
+			"accepts": [
+				{
+					"arg": "id",
+					"type": "string",
+					"description": "user id",
+					"required": true
+				}
+			],
+			"description": "Remind user",
+			"http": [
+				{
+					"path": "/remind-user",
 					"verb": "post"
 				}
 			]

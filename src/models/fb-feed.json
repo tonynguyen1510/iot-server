@@ -26,6 +26,10 @@
 		"content": {
 			"type": "string",
 			"require": true
+		},
+		"status": {
+			"type": "string",
+			"default": "pending"
 		}
 	},
 	"validations": [],
