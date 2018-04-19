@@ -20,7 +20,7 @@ export default function (TicketBuying) {
 				ticket: { ...oldData.__data, ...newData },
 			});
 
-			if (newData.dataType === 'fb') {
+			if (newData.dataType === 'fb' || oldData.dataType === 'fb') {
 				return next();
 			}
 
@@ -34,7 +34,7 @@ export default function (TicketBuying) {
 					});
 				}),
 				new Promise((resolve) => {
-					User.findById(newData.creatorId, (errUser, creator) => {
+					User.findById(newData.creatorId || oldData.creatorId, (errUser, creator) => {
 						if (errUser) {
 							throw errUser;
 						}
@@ -49,12 +49,20 @@ export default function (TicketBuying) {
 					from: 'noreply@chove.vn',
 					subject: '[Chove]Thông tin người mua vé',
 					html: `
-						<div style="text-align: auto">
-							<p>Vui lòng liên hệ với người mua vé thông qua</p>
-							<ul>
-								<li>Email: ${contactor.email}</li>
-								<li>SDT: ${contactor.phone}</li>
-							</ul>
+						<div style="box-sizing:border-box;padding: 40px;max-width:768px;margin-top:auto;margin-bottom:auto;margin-right:auto;margin-left:auto;background-color:#4A9CD5;" >
+							<div class="main-email" style="box-sizing:border-box;padding:20px;background-color:#fff;box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);text-align:center;" >
+								<img src="${User.app.get('webUrl')}/static/assets/images/logo/1x.png" alt="" style="box-sizing:border-box;max-width:120px;height:auto;padding-top:25px;padding-bottom:25px;padding-right:0;padding-left:0;" >
+								<p>Vui lòng liên hệ với người mua vé thông qua</p>
+								<div>
+									<div>Email: ${contactor.email}</div>
+									<div>SDT: ${contactor.phone}</div>
+								</div>
+								<div style="box-sizing:border-box;padding-bottom:20px;padding-right:0;padding-left:0;text-align:center;color:#7b7b7b;" >
+									<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
+									<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >Hotline: 0913231019</p>
+								</div>
+							</div>
+
 						</div>
 					`,
 				}, (errEmail) => {
