@@ -55,7 +55,7 @@
 		"gender": {
 			"type": "string"
 		},
-		"birthDate": {
+		"birthday": {
 			"type": "date"
 		},
 		"phone": {
