@@ -59,12 +59,20 @@ export default function (Rating) {
 				} else {
 					const { ratingsCount = 0, ratingsStats = {} } = user;
 
-					user.updateAttributes({ ...increaseRating(newStar, { ratingsCount, rating: JSON.parse(JSON.stringify(ratingsStats)) }) });
+					user.updateAttributes({ ...increaseRating(newStar, { ratingsCount, rating: JSON.parse(JSON.stringify(ratingsStats)) }) }, (err, returedUser) => {
+						if (err) {
+							throw err;
+						}
+						rate.userStar = returedUser.ratingsCount;
+						next();
+					});
 				}
 			});
+		} else {
+			next();
 		}
 
-		next();
+		// next();
 	});
 
 	Rating.afterRemote('deleteById', (ctx, data, next) => {
