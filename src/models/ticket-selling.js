@@ -1,5 +1,11 @@
 import cronjob from '../utils/cronjob';
 
+const formatDate = (dirtyDate) => {
+	const date = new Date(dirtyDate);
+
+	return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+};
+
 export default function (TicketSelling) {
 
 	TicketSelling.observe('before save', function (ctx, next) {
@@ -73,10 +79,10 @@ export default function (TicketSelling) {
 						<ul>
 							<li>Loại vé: ${newData.flightType === 'oneWay' ? 'Một chiều' : 'Khứ hồi'}</li>
 							<li>Số vé: ${newData.seatCount}</li>
-							<li>Điểm đi: ${newData.departure}</li>
-							<li>Điểm đến: ${newData.destination}</li>
-							<li>Ngày đi: ${newData.trip.startDate} ${newData.trip.startTime}</li>
-							<li>Ngày về: ${newData.tripBack ? newData.tripBack.startDate : ''} ${newData.tripBack ? newData.tripBack.startTime : ''}<li>
+							<li>Điểm đi: ${newData.trip.departure}</li>
+							<li>Điểm đến: ${newData.trip.destination}</li>
+							<li>Ngày đi: ${formatDate(newData.trip.startDate)} ${newData.trip.startTime}</li>
+							<li>Ngày về: ${newData.tripBack ? formatDate(newData.tripBack.startDate) : ''} ${newData.tripBack ? newData.tripBack.startTime : ''}<li>
 							<li>Loại ghế: ${newData.seatType} </li>
 							<li>Số kg mang theo: ${newData.packageWeight} </li>
 							<li>Hãng bay: ${newData.airline}</li>
@@ -114,6 +120,9 @@ export default function (TicketSelling) {
 			// 	ticket: { ...oldData.__data, ...newData },
 			// });
 
+			console.log('newData', newData);
+			console.log('oldData', oldData);
+
 			User.findById(newData.contactId, (errUser, contactor) => {
 				if (errUser) {
 					console.log('errUser', errUser);
@@ -124,7 +133,7 @@ export default function (TicketSelling) {
 					html: `
 						<h1>Xin chào</h1>
 						<p>Bạn vừa đặt vé thành công trên hệ thống chove.vn.</p>
-						<p>Để nhận được vé, vui lòng chuyển tiền đến tài khoản ABCDEF với nội dung: "${contactor.fullName} - ${newData.id}"</p>
+						<p>Để nhận được vé, vui lòng chuyển tiền đến tài khoản ABCDEF với nội dung: "${contactor.fullName} - ${newData.id || oldData.id}"</p>
 					`,
 				};
 
@@ -280,6 +289,8 @@ export default function (TicketSelling) {
 				throw errTicket;
 			}
 
+			ticketSelling = ticketSelling.toObject(); //eslint-disable-line
+
 			if (ticketSelling.status !== 'closed') {
 				next();
 			} else {
@@ -294,8 +305,8 @@ export default function (TicketSelling) {
 							<li>Số vé: ${ticketSelling.seatCount}</li>
 							<li>Điểm đi: ${ticketSelling.trip.departure}</li>
 							<li>Điểm đến: ${ticketSelling.trip.destination}</li>
-							<li>Ngày đi: ${ticketSelling.trip.startDate} ${ticketSelling.trip.startTime}</li>
-							<li>Ngày về: ${ticketSelling.tripBack ? ticketSelling.tripBack.startDate : ''} ${ticketSelling.tripBack ? ticketSelling.tripBack.startTime : ''}<li>
+							<li>Ngày đi: ${formatDate(ticketSelling.trip.startDate)} ${ticketSelling.trip.startTime}</li>
+							<li>Ngày về: ${ticketSelling.tripBack ? formatDate(ticketSelling.tripBack.startDate) : ''} ${ticketSelling.tripBack ? ticketSelling.tripBack.startTime : ''}</li>
 							<li>Loại ghế: ${ticketSelling.seatType} </li>
 							<li>Số kg mang theo: ${ticketSelling.packageWeight} </li>
 							<li>Hãng bay: ${ticketSelling.airline}</li>
