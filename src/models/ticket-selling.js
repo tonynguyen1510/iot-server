@@ -18,8 +18,8 @@ export default function (TicketSelling) {
 		const _sendEmail = (user, email) => {
 			return new Promise((resolve) => {
 				Email.send({
-					to: 'maihuunhan30071992@gmail.com',
-					// to: user.email,
+					// to: 'maihuunhan30071992@gmail.com',
+					to: user.email,
 					from: 'noreply@chove.vn',
 					subject: email.subject,
 					html: email.html,
@@ -306,8 +306,8 @@ export default function (TicketSelling) {
 		const _sendEmail = (user, email) => {
 			return new Promise((resolve) => {
 				Email.send({
-					to: 'maihuunhan30071992@gmail.com',
-					// to: user.email,
+					// to: 'maihuunhan30071992@gmail.com',
+					to: user.email,
 					from: 'noreply@chove.vn',
 					subject: email.subject,
 					html: email.html,

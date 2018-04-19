@@ -44,8 +44,8 @@ export default function (TicketBuying) {
 
 			]).then(([contactor, creator]) => {
 				Email.send({
-					to: 'maihuunhan30071992@gmail.com',
-					// to: creator.email,
+					// to: 'maihuunhan30071992@gmail.com',
+					to: creator.email,
 					from: 'noreply@chove.vn',
 					subject: '[Chove]Thông tin người mua vé',
 					html: `
