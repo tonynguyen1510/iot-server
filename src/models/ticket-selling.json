@@ -55,6 +55,9 @@
 		"bidDueDate": {
 			"type": "date"
 		},
+		"dueDate": {
+			"type": "date"
+		},
 		"startingPrice": {
 			"type": "number"
 		},
@@ -64,6 +67,10 @@
 		"status": {
 			"type": "string",
 			"default": "open"
+		},
+		"approved": {
+			"type": "boolean",
+			"default": false
 		},
 		"trip": {
 			"type": {

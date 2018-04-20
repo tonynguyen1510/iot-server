@@ -39,6 +39,8 @@ export default function (TicketSelling) {
 		}
 
 		if (oldData.status !== 'closed' && newData.status === 'closed') {
+			// console.log('oldData', oldData);
+			// console.log('newData', newData);
 			Tracking.create({
 				userId: newData.contactId,
 				action: newData.isBid ? 'bid-buy' : 'buy',
@@ -132,12 +134,10 @@ export default function (TicketSelling) {
 			// 	ticket: { ...oldData.__data, ...newData },
 			// });
 
-			console.log('newData', newData);
-			console.log('oldData', oldData);
-
 			User.findById(newData.contactId, (errUser, contactor) => {
 				if (errUser) {
 					console.log('errUser', errUser);
+					throw errUser;
 				}
 
 				const pendingBuyerEmail = {
@@ -150,7 +150,7 @@ export default function (TicketSelling) {
 								<div>
 									<h1>Xin chào</h1>
 									<p>Bạn vừa đặt vé thành công trên hệ thống chove.vn.</p>
-									<p>Để nhận được vé, vui lòng chuyển tiền đến tài khoản ABCDEF với nội dung: "${contactor.fullName} - ${newData.id || oldData.id}"</p>
+									<p>Để nhận được vé, vui lòng chuyển tiền đến tài khoản ABCDEF với nội dung: "${contactor.fullName || ''} - ${newData.id || oldData.id}"</p>
 								</div>
 								<div style="box-sizing:border-box;padding-bottom:20px;padding-right:0;padding-left:0;text-align:center;color:#7b7b7b;" >
 									<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
@@ -171,6 +171,7 @@ export default function (TicketSelling) {
 			User.findById(newData.contactId, (errUser, contactor) => {
 				if (errUser) {
 					console.log('errUser', errUser);
+					throw errUser;
 				}
 
 				const pendingBuyerEmail = {
@@ -280,7 +281,7 @@ export default function (TicketSelling) {
 
 	TicketSelling.afterRemote('create', (ctx, ticketSelling, next) => {
 		if (ticketSelling.isBid) {
-			cronjob.schedule(ticketSelling.bidDueDate, 'bid.update-status-pending', { ticketSellingId: ticketSelling.id, type: 'selling-bid' });
+			cronjob.schedule(ticketSelling.dueDate, 'bid.update-status-pending', { ticketSellingId: ticketSelling.id, type: 'selling-bid' });
 		}
 		next();
 	});
@@ -291,6 +292,7 @@ export default function (TicketSelling) {
 		if (ticketSelling.fbFeedId) {
 			FBFeed.findById(ticketSelling.fbFeedId, (fbFeed) => {
 				ticketSelling.fbFeed = fbFeed.toObject();
+				ticketSelling.approved = true;
 
 				fbFeed.status = 'approved';
 

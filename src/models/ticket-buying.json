@@ -65,6 +65,10 @@
 			"type": "string",
 			"default": "open"
 		},
+		"approved": {
+			"type": "boolean",
+			"default": false
+		},
 		"fbFeedId": {
 			"type": "string"
 		},

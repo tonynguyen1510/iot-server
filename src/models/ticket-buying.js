@@ -183,8 +183,8 @@ export default function (TicketBuying) {
 				if (err) {
 					throw err;
 				}
-				console.log('fbFeed', fbFeed);
 				ticketBuying.fbFeed = fbFeed.toObject();
+				ticketBuying.approved = true;
 
 				fbFeed.status = 'approved';
 
