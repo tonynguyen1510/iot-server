@@ -206,7 +206,11 @@ export default function (TicketSelling) {
 	});
 
 	TicketSelling.beforeRemote('find', (ctx, ticketSelling, next) => {
-		const { where } = ctx.args.filter;
+		if (!ctx.args.filter) {
+			return next();
+		}
+		const { where = {} } = ctx.args.filter;
+
 		const newWhere = {
 			and: Object.keys(where).map((filterName) => {
 				const filterValue = where[filterName];

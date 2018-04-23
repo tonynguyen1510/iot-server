@@ -88,7 +88,10 @@ export default function (TicketBuying) {
 	});
 
 	TicketBuying.beforeRemote('find', (ctx, ticketBuying, next) => {
-		const { where } = ctx.args.filter;
+		if (!ctx.args.filter) {
+			return next();
+		}
+		const { where = {} } = ctx.args.filter;
 		const newWhere = {
 			and: Object.keys(where).map((filterName) => {
 				const filterValue = where[filterName];
