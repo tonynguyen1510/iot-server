@@ -36,8 +36,6 @@ app.start = function () {
 		app.emit('started');
 		const baseUrl = app.get('url').replace(/\/$/, '');
 
-		console.log(' app.get()', app.get('webUrl'));
-
 		console.log('REST API server listening at: %s', baseUrl);
 		if (app.get('loopback-component-explorer')) {
 			const explorerPath = app.get('loopback-component-explorer').mountPath;

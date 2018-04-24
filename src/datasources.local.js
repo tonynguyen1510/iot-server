@@ -13,7 +13,7 @@ module.exports = { // eslint-disable-line
 		'transports': [
 			{
 				'type': 'smtp',
-				'host': 'smtp.gmail.com',
+				'host': process.env.EMAIL_HOST || 'smtp.gmail.com',
 				'secure': true,
 				'port': 465,
 				'tls': {
