@@ -9,8 +9,15 @@ export const updateStatusPending = (job, done) => {
 	TicketSelling.findById(ticketSellingId, (err, ticketSelling) => {
 		if (err) {
 			console.log('err', err);
+			job.disable();
 			throw err;
 		}
+
+		if (!ticketSelling) {
+			job.disable();
+			return;
+		}
+
 		ticketSelling.status = 'pending';
 
 		ticketSelling.save({}, (errSave) => {
