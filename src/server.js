@@ -11,6 +11,9 @@ import boot from 'loopback-boot';
 import morgan from 'morgan';
 import PrettyError from 'pretty-error';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const app = loopback();
 
@@ -32,6 +35,8 @@ app.start = function () {
 	return app.listen(function () {
 		app.emit('started');
 		const baseUrl = app.get('url').replace(/\/$/, '');
+
+		console.log(' app.get()', app.get('webUrl'));
 
 		console.log('REST API server listening at: %s', baseUrl);
 		if (app.get('loopback-component-explorer')) {

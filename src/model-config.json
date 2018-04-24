@@ -2,14 +2,14 @@
 	"_meta": {
 		"sources": [
 		"loopback/common/models",
-		"loopback/src/models",
+		"loopback/server/models",
 		"../common/models",
 		"../models",
 		"./models"
 		],
 		"mixins": [
 		"loopback/common/mixins",
-		"loopback/src/mixins",
+		"loopback/server/mixins",
 		"../node_modules/loopback-counts-mixin",
 		"../common/mixins",
 		"./mixins"
