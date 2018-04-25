@@ -9,11 +9,7 @@
 import { FB } from 'fb';
 import GoogleAuth from 'google-auth-library';
 import Zalo from 'zalo-sdk';
-<<<<<<< HEAD
-import path from 'path';
-=======
 import loopback from 'loopback';
->>>>>>> 367d10e35e4553f816328e925605b8698a8a51d7
 // import axios from 'axios';
 
 import login from 'src/utils/login';
