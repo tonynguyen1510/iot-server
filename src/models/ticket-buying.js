@@ -26,7 +26,7 @@ export default function (TicketBuying) {
 
 			Promise.all([
 				new Promise((resolve) => {
-					User.findById(newData.contactId, (errUser, contactor) => {
+					User.findById(newData.contactId || oldData.contactId, (errUser, contactor) => {
 						if (errUser) {
 							throw errUser;
 						}
@@ -43,35 +43,129 @@ export default function (TicketBuying) {
 				}),
 
 			]).then(([contactor, creator]) => {
-				Email.send({
-					// to: 'maihuunhan30071992@gmail.com',
-					to: creator.email,
-					from: 'noreply@chove.vn',
-					subject: '[Chove]Thông tin người mua vé',
-					html: `
-						<div style="box-sizing:border-box;padding: 40px;max-width:768px;margin-top:auto;margin-bottom:auto;margin-right:auto;margin-left:auto;background-color:#4A9CD5;" >
-							<div class="main-email" style="box-sizing:border-box;padding:20px;background-color:#fff;box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);text-align:center;" >
-								<img src="${User.app.get('webUrl')}/static/assets/images/logo/1x.png" alt="" style="box-sizing:border-box;max-width:120px;height:auto;padding-top:25px;padding-bottom:25px;padding-right:0;padding-left:0;" >
-								<p>Vui lòng liên hệ với người mua vé thông qua</p>
-								<div>
-									<div>Email: ${contactor.email}</div>
-									<div>SDT: ${contactor.phone}</div>
-								</div>
-								<div style="box-sizing:border-box;padding-bottom:20px;padding-right:0;padding-left:0;text-align:center;color:#7b7b7b;" >
-									<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
-									<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >Hotline: 0913231019</p>
-								</div>
-							</div>
+				const webUrl = TicketBuying.app.get('webUrl');
 
-						</div>
-					`,
-				}, (errEmail) => {
-					if (errEmail) {
-						console.log('send email errEmailor', errEmail);
-						throw errEmail;
-					}
-					next();
+				const _sendEmailToContactor = new Promise((resolve) => {
+					Email.send({
+						// to: 'maihuunhan30071992@gmail.com',
+						to: contactor.email,
+						from: 'noreply@chove.vn',
+						subject: '[Chove]Thông tin người mua vé',
+						html: `
+							<head>
+								<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+							</head>
+							<body>
+								<div style="
+									box-sizing:border-box;
+									padding: 50px 80px;
+									max-width: 768px;
+									margin: auto;
+									background-image: url('${webUrl}/static/assets/images/email-background.png');
+									background-size: cover;
+									font-family: Roboto;
+								">
+
+									<div style="
+										box-sizing:border-box;
+										padding:20px;
+										background-color:#fff;
+										box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);
+										text-align:center;
+										color: #606060;
+									">
+										<img src="${webUrl}/static/assets/images/logo/2x.png" width="200" />
+										<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
+										<div style="font-size: 20px">Bạn đã đăng ký bán vé</div>
+										<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
+											<div>Vui lòng liên hệ với người mua vé thông qua thông tin dưới đây</div>
+											<div>
+												<div>Tên: ${creator.fullName}</div>
+												<div>Email: ${creator.email}</div>
+												<div>SDT: ${creator.phone}</div>
+											</div>
+										</div>
+
+										<div style="width: 150px; height: 1px; background: #D6D5D5; margin:auto"></div>
+										<div style="font-size:20px; margin-top:15px;margin-bottom:40px;font-weight:700">Chợ vé Services team</div>
+										<div>
+											<p style="font-size:12px;color:#B2B2B2;">25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
+											<p style="font-size:12px;color:#B2B2B2;">Hotline: 0913231019</p>
+										</div>
+									</div>
+								</div>
+							</body>
+						`,
+					}, (errEmail) => {
+						if (errEmail) {
+							console.log('send email errEmailor', errEmail);
+							throw errEmail;
+						}
+						resolve();
+					});
 				});
+
+				const _sendEmailToCreator = new Promise((resolve) => {
+					Email.send({
+						// to: 'maihuunhan30071992@gmail.com',
+						to: creator.email,
+						from: 'noreply@chove.vn',
+						subject: '[Chove]Đã có người đăng ký bán vé cho bạn',
+						html: `
+							<head>
+								<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+							</head>
+							<body>
+								<div style="
+									box-sizing:border-box;
+									padding: 50px 80px;
+									max-width: 768px;
+									margin: auto;
+									background-image: url('${webUrl}/static/assets/images/email-background.png');
+									background-size: cover;
+									font-family: Roboto;
+								">
+
+									<div style="
+										box-sizing:border-box;
+										padding:20px;
+										background-color:#fff;
+										box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);
+										text-align:center;
+										color: #606060;
+									">
+										<img src="${webUrl}/static/assets/images/logo/2x.png" width="200" />
+										<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
+										<div style="font-size: 20px">Chúc mừng đã có người đăng ký để bán vé cho bạn</div>
+										<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
+											<div>Vui lòng liên hệ với người bán vé thông qua thông tin dưới đây</div>
+											<div>
+												<div>Tên: ${contactor.fullName}</div>
+												<div>Email: ${contactor.email}</div>
+												<div>SDT: ${contactor.phone}</div>
+											</div>
+										</div>
+
+										<div style="width: 150px; height: 1px; background: #D6D5D5; margin:auto"></div>
+										<div style="font-size:20px; margin-top:15px;margin-bottom:40px;font-weight:700">Chợ vé Services team</div>
+										<div>
+											<p style="font-size:12px;color:#B2B2B2;">25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
+											<p style="font-size:12px;color:#B2B2B2;">Hotline: 0913231019</p>
+										</div>
+									</div>
+								</div>
+							</body>
+						`,
+					}, (errEmail) => {
+						if (errEmail) {
+							console.log('send email errEmailor', errEmail);
+							throw errEmail;
+						}
+						resolve();
+					});
+				});
+
+				Promise.all([_sendEmailToContactor, _sendEmailToCreator]).then(() => next());
 			});
 		} else if (oldData.status !== 'pending' && newData.status === 'pending') {
 			// Tracking.create({

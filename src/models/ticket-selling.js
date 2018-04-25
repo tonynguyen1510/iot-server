@@ -55,7 +55,7 @@ export default function (TicketSelling) {
 
 			Promise.all([
 				new Promise((resolve) => {
-					User.findById(newData.contactId, (errUser, contactor) => {
+					User.findById(newData.contactId || oldData.contactId, (errUser, contactor) => {
 						if (errUser) {
 							throw errUser;
 						}
@@ -63,7 +63,7 @@ export default function (TicketSelling) {
 					});
 				}),
 				new Promise((resolve) => {
-					User.findById(newData.creatorId, (errUser, creator) => {
+					User.findById(newData.creatorId || oldData.creatorId, (errUser, creator) => {
 						if (errUser) {
 							throw errUser;
 						}
@@ -72,49 +72,108 @@ export default function (TicketSelling) {
 				}),
 
 			]).then(([contactor, creator]) => {
+				const webUrl = TicketSelling.app.get('webUrl');
 				const closedBuyerEmail = {
 					subject: '[Chove]Bạn đã bán vé thành công',
 					html: `
-						<div style="box-sizing:border-box;padding: 40px;max-width:768px;margin-top:auto;margin-bottom:auto;margin-right:auto;margin-left:auto;background-color:#4A9CD5;" >
-							<div class="main-email" style="box-sizing:border-box;padding:20px;background-color:#fff;box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);text-align:center;" >
-								<img src="${User.app.get('webUrl')}/static/assets/images/logo/1x.png" alt="" style="box-sizing:border-box;max-width:120px;height:auto;padding-top:25px;padding-bottom:25px;padding-right:0;padding-left:0;" >
-								<p>Vui lòng liên hệ với người mua vé thông qua</p>
-								<div>
-									<h1>Chúc mừng</h1>
-									<p>Bạn đã đặt vé thành công</p>
-									<p>Thông tin vé</p>
+						<head>
+							<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+						</head>
+						<body>
+							<div style="
+								box-sizing:border-box;
+								padding: 50px 80px;
+								max-width: 768px;
+								margin: auto;
+								background-image: url('${webUrl}/static/assets/images/email-background.png');
+								background-size: cover;
+								font-family: Roboto;
+							">
+
+								<div style="
+									box-sizing:border-box;
+									padding:20px;
+									background-color:#fff;
+									box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);
+									text-align:center;
+									color: #606060;
+								">
+									<img src="${webUrl}/static/assets/images/logo/2x.png" width="200" />
+									<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
+									<div style="font-size: 20px">Chúc mừng bạn đã mua vé thành công</div>
+									<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
+										<div>Thông tin vé</div>
+										<div>
+											<div><b>Loại vé:</b> ${newData.flightType === 'oneWay' ? 'Một chiều' : 'Khứ hồi'}</div>
+											<div><b>Số vé:</b> ${newData.seatCount}</div>
+											<div><b>Điểm đi:</b> ${newData.trip.departure}</div>
+											<div><b>Điểm đến:</b> ${newData.trip.destination}</div>
+											<div><b>Ngày đi:</b> ${formatDate(newData.trip.startDate)} ${newData.trip.startTime}</div>
+											<div><b>Ngày về:</b> ${newData.tripBack ? formatDate(newData.tripBack.startDate) : ''} ${newData.tripBack ? newData.tripBack.startTime : ''}<div>
+											<div><b>Loại ghế:</b> ${newData.seatType} </div>
+											<div><b>Số kg mang theo:</b> ${newData.packageWeight} </div>
+											<div><b>Hãng bay:</b> ${newData.airline}</div>
+										</div>
+									</div>
+
+									<div style="width: 150px; height: 1px; background: #D6D5D5; margin:auto"></div>
+									<div style="font-size:20px; margin-top:15px;margin-bottom:40px;font-weight:700">Chợ vé Services team</div>
 									<div>
-										<div><b>Loại vé:</b> ${newData.flightType === 'oneWay' ? 'Một chiều' : 'Khứ hồi'}</div>
-										<div><b>Số vé:</b> ${newData.seatCount}</div>
-										<div><b>Điểm đi:</b> ${newData.trip.departure}</div>
-										<div><b>Điểm đến:</b> ${newData.trip.destination}</div>
-										<div><b>Ngày đi:</b> ${formatDate(newData.trip.startDate)} ${newData.trip.startTime}</div>
-										<div><b>Ngày về:</b> ${newData.tripBack ? formatDate(newData.tripBack.startDate) : ''} ${newData.tripBack ? newData.tripBack.startTime : ''}<div>
-										<div><b>Loại ghế:</b> ${newData.seatType} </div>
-										<div><b>Số kg mang theo:</b> ${newData.packageWeight} </div>
-										<div><b>Hãng bay:</b> ${newData.airline}</div>
+										<p style="font-size:12px;color:#B2B2B2;">25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
+										<p style="font-size:12px;color:#B2B2B2;">Hotline: 0913231019</p>
 									</div>
 								</div>
-								<div style="box-sizing:border-box;padding-bottom:20px;padding-right:0;padding-left:0;text-align:center;color:#7b7b7b;" >
-									<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
-									<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >Hotline: 0913231019</p>
-								</div>
 							</div>
-						</div>
+						</body>
 					`
 				};
 
 				const closedSellerEmail = {
 					subject: '[Chove]Bạn đã bán vé thành công',
 					html: `
-						<h1>Chúc mừng</h1>
-						<p>Bạn đã đặt vé thành công</p>
-						<p>Thông tin người mua</p>
-						<ul>
-							<li>Tên: ${contactor.fullName}</li>
-							<li>Email: ${contactor.email}</li>
-							<li>SDT: ${contactor.phone}</li>
-						</ul>
+						<head>
+							<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+						</head>
+						<body>
+							<div style="
+								box-sizing:border-box;
+								padding: 50px 80px;
+								max-width: 768px;
+								margin: auto;
+								background-image: url('${webUrl}/static/assets/images/email-background.png');
+								background-size: cover;
+								font-family: Roboto;
+							">
+
+								<div style="
+									box-sizing:border-box;
+									padding:20px;
+									background-color:#fff;
+									box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);
+									text-align:center;
+									color: #606060;
+								">
+									<img src="${webUrl}/static/assets/images/logo/2x.png" width="200" />
+									<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
+									<div style="font-size: 20px">Chúc mừng đã có người mua vé của bạn</div>
+									<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
+										<div>Vui lòng liên hệ với người mua vé thông qua thông tin dưới đây</div>
+										<div>
+											<div><b>Tên:</b> ${contactor.fullName}</div>
+											<div><b>Email:</b> ${contactor.email}</div>
+											<div><b>SDT:</b> ${contactor.phone}</div>
+										</div>
+									</div>
+
+									<div style="width: 150px; height: 1px; background: #D6D5D5; margin:auto"></div>
+									<div style="font-size:20px; margin-top:15px;margin-bottom:40px;font-weight:700">Chợ vé Services team</div>
+									<div>
+										<p style="font-size:12px;color:#B2B2B2;">25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
+										<p style="font-size:12px;color:#B2B2B2;">Hotline: 0913231019</p>
+									</div>
+								</div>
+							</div>
+						</body>
 					`
 				};
 
@@ -134,65 +193,178 @@ export default function (TicketSelling) {
 			// 	ticket: { ...oldData.__data, ...newData },
 			// });
 
-			User.findById(newData.contactId, (errUser, contactor) => {
-				if (errUser) {
-					console.log('errUser', errUser);
-					throw errUser;
-				}
+			Promise.all([
+				new Promise((resolve) => {
+					User.findById(newData.contactId || oldData.contactId, (errUser, contactor) => {
+						if (errUser) {
+							throw errUser;
+						}
+						resolve(contactor);
+					});
+				}),
+				new Promise((resolve) => {
+					User.findById(newData.creatorId || oldData.creatorId, (errUser, creator) => {
+						if (errUser) {
+							throw errUser;
+						}
+						resolve(creator);
+					});
+				}),
 
+			]).then(([contactor, creator]) => {
+				const webUrl = TicketSelling.app.get('webUrl');
 				const pendingBuyerEmail = {
 					subject: '[Chove]Thông tin thanh toán',
 					html: `
-						<div style="box-sizing:border-box;padding: 40px;max-width:768px;margin-top:auto;margin-bottom:auto;margin-right:auto;margin-left:auto;background-color:#f9fafc;" >
-							<div class="main-email" style="box-sizing:border-box;padding:20px;background-color:#fff;box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);text-align:center;" >
-								<img src="http://35.201.229.48:3004/static/assets/images/logo/1x.png" alt="" style="box-sizing:border-box;max-width:120px;height:auto;padding-top:25px;padding-bottom:25px;padding-right:0;padding-left:0;" >
-								<p>Vui lòng liên hệ với người mua vé thông qua</p>
-								<div>
-									<h1>Xin chào</h1>
-									<p>Bạn vừa đặt vé thành công trên hệ thống chove.vn.</p>
-									<p>Để nhận được vé, vui lòng chuyển tiền đến tài khoản ABCDEF với nội dung: "${contactor.fullName || ''} - ${newData.id || oldData.id}"</p>
-								</div>
-								<div style="box-sizing:border-box;padding-bottom:20px;padding-right:0;padding-left:0;text-align:center;color:#7b7b7b;" >
-									<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
-									<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >Hotline: 0913231019</p>
+						<head>
+							<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+						</head>
+						<body>
+							<div style="
+								box-sizing:border-box;
+								padding: 50px 80px;
+								max-width: 768px;
+								margin: auto;
+								background-image: url('${webUrl}/static/assets/images/email-background.png');
+								background-size: cover;
+								font-family: Roboto;
+							">
+
+								<div style="
+									box-sizing:border-box;
+									padding:20px;
+									background-color:#fff;
+									box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);
+									text-align:center;
+									color: #606060;
+								">
+									<img src="${webUrl}/static/assets/images/logo/2x.png" width="200" />
+									<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
+									<div style="font-size: 20px">Bạn đã đăng ký mua vé thành công</div>
+									<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
+										<div>Chúc mừng bạn đã đăng ký mua vé thành công trên hệ thống chove.vn</div>
+										<div>Để có thể nhận được vé. Vui lòng chuyển tiền đến tài khoản Chove với nội dung: "${contactor.fullName || ''} - ${newData.id || oldData.id}"</div>
+
+									</div>
+									<div style="width: 150px; height: 1px; background: #D6D5D5; margin:auto"></div>
+									<div style="font-size:20px; margin-top:15px;margin-bottom:40px;font-weight:700">Chợ vé Services team</div>
+									<div>
+										<p style="font-size:12px;color:#B2B2B2;">25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
+										<p style="font-size:12px;color:#B2B2B2;">Hotline: 0913231019</p>
+									</div>
 								</div>
 							</div>
-
-						</div>
+						</body>
 					`,
 				};
 
-				_sendEmail(contactor, pendingBuyerEmail).then(() => {
-					next();
-				});
-			});
+				const pendingSellerEmail = {
+					subject: '[Chove]Thông tin người mua vé',
+					html: `
+						<head>
+							<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+						</head>
+						<body>
+							<div style="
+								box-sizing:border-box;
+								padding: 50px 80px;
+								max-width: 768px;
+								margin: auto;
+								background-image: url('${webUrl}/static/assets/images/email-background.png');
+								background-size: cover;
+								font-family: Roboto;
+							">
 
+								<div style="
+									box-sizing:border-box;
+									padding:20px;
+									background-color:#fff;
+									box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);
+									text-align:center;
+									color: #606060;
+								">
+									<img src="${webUrl}/static/assets/images/logo/2x.png" width="200" />
+									<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
+									<div style="font-size: 20px">Thông tin người mua vé</div>
+									<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
+										<div>Chúc mừng đã có người đăng ký mua vé của bạn. Vui lòng liên hệ với người mua vé thông qua thông tin dưới đây</div>
+										<div>
+											<div>Tên: ${contactor.fullName}</div>
+											<div>Email: ${contactor.email}</div>
+											<div>SDT: ${contactor.phone}</div>
+										</div>
+
+									</div>
+
+									<div style="width: 150px; height: 1px; background: #D6D5D5; margin:auto"></div>
+									<div style="font-size:20px; margin-top:15px;margin-bottom:40px;font-weight:700">Chợ vé Services team</div>
+									<div>
+										<p style="font-size:12px;color:#B2B2B2;">25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
+										<p style="font-size:12px;color:#B2B2B2;">Hotline: 0913231019</p>
+									</div>
+								</div>
+							</div>
+						</body>
+					`,
+				};
+
+				Promise.all([
+					_sendEmail(contactor, pendingBuyerEmail),
+					_sendEmail(creator, pendingSellerEmail),
+
+				]);
+			});
 		} else if (oldData.isBid && oldData.status === 'pending' && (String(newData.contactId) !== String(oldData.contactId) || newData.price !== oldData.price)){
-			User.findById(newData.contactId, (errUser, contactor) => {
+			User.findById(newData.contactId || oldData.contactId, (errUser, contactor) => {
 				if (errUser) {
 					console.log('errUser', errUser);
 					throw errUser;
 				}
 
+				const webUrl = TicketSelling.app.get('webUrl');
 				const pendingBuyerEmail = {
 					subject: '[Chove]Thông tin thanh toán',
 					html: `
-						<div style="box-sizing:border-box;padding: 40px;max-width:768px;margin-top:auto;margin-bottom:auto;margin-right:auto;margin-left:auto;background-color:#f9fafc;" >
-							<div class="main-email" style="box-sizing:border-box;padding:20px;background-color:#fff;box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);text-align:center;" >
-								<img src="http://35.201.229.48:3004/static/assets/images/logo/1x.png" alt="" style="box-sizing:border-box;max-width:120px;height:auto;padding-top:25px;padding-bottom:25px;padding-right:0;padding-left:0;" >
-								<p>Vui lòng liên hệ với người mua vé thông qua</p>
-								<div>
-									<h1>Xin chào</h1>
-									<p>Bạn đã đấu giá thành công thành công trên hệ thống chove.vn.</p>
-									<p>Để nhận được vé, vui lòng chuyển tiền đến tài khoản ABCDEF với nội dung: "${contactor.fullName} - ${newData.id}"</p>
-								</div>
-								<div style="box-sizing:border-box;padding-bottom:20px;padding-right:0;padding-left:0;text-align:center;color:#7b7b7b;" >
-									<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
-									<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >Hotline: 0913231019</p>
+						<head>
+							<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+						</head>
+						<body>
+							<div style="
+								box-sizing:border-box;
+								padding: 50px 80px;
+								max-width: 768px;
+								margin: auto;
+								background-image: url('${webUrl}/static/assets/images/email-background.png');
+								background-size: cover;
+								font-family: Roboto;
+							">
+
+								<div style="
+									box-sizing:border-box;
+									padding:20px;
+									background-color:#fff;
+									box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);
+									text-align:center;
+									color: #606060;
+								">
+									<img src="${webUrl}/static/assets/images/logo/2x.png" width="200" />
+									<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
+									<div style="font-size: 20px">Bạn đã đấu giá thành công</div>
+									<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
+										<div>Chúc mừng bạn đã đấu giá thành công trên hệ thống chove.vn</div>
+										<div>Để có thể nhận được vé. Vui lòng chuyển tiền đến tài khoản Chove với nội dung: "${contactor.fullName || ''} - ${newData.id || oldData.id}"</div>
+
+									</div>
+
+									<div style="width: 150px; height: 1px; background: #D6D5D5; margin:auto"></div>
+									<div style="font-size:20px; margin-top:15px;margin-bottom:40px;font-weight:700">Chợ vé Services team</div>
+									<div>
+										<p style="font-size:12px;color:#B2B2B2;">25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
+										<p style="font-size:12px;color:#B2B2B2;">Hotline: 0913231019</p>
+									</div>
 								</div>
 							</div>
-
-						</div>
+						</body>
 					`,
 				};
 
@@ -338,35 +510,59 @@ export default function (TicketSelling) {
 			if (ticketSelling.status !== 'closed') {
 				next();
 			} else {
+				const webUrl = TicketSelling.app.get('webUrl');
 				const closedBuyerEmail = {
 					subject: '[Chove]Bạn đã bán vé thành công',
 					html: `
-						<div style="box-sizing:border-box;padding: 40px;max-width:768px;margin-top:auto;margin-bottom:auto;margin-right:auto;margin-left:auto;background-color:#4A9CD5;" >
-							<div class="main-email" style="box-sizing:border-box;padding:20px;background-color:#fff;box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);text-align:center;" >
-								<img src="${TicketSelling.app.get('webUrl')}/static/assets/images/logo/1x.png" alt="" style="box-sizing:border-box;max-width:120px;height:auto;padding-top:25px;padding-bottom:25px;padding-right:0;padding-left:0;" >
-								<p>Vui lòng liên hệ với người mua vé thông qua</p>
-								<div>
-									<h1>Chúc mừng</h1>
-									<p>Bạn đã đặt vé thành công</p>
-									<p>Thông tin vé</p>
+						<head>
+							<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+						</head>
+						<body>
+							<div style="
+								box-sizing:border-box;
+								padding: 50px 80px;
+								max-width: 768px;
+								margin: auto;
+								background-image: url('${webUrl}/static/assets/images/email-background.png');
+								background-size: cover;
+								font-family: Roboto;
+							">
+
+								<div style="
+									box-sizing:border-box;
+									padding:20px;
+									background-color:#fff;
+									box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);
+									text-align:center;
+									color: #606060;
+								">
+									<img src="${webUrl}/static/assets/images/logo/2x.png" width="200" />
+									<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
+									<div style="font-size: 20px">Chúc mừng bạn đã mua vé thành công</div>
+									<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
+										<div>Thông tin vé</div>
+										<div>
+											<div><b>Loại vé:</b> ${ticketSelling.flightType === 'oneWay' ? 'Một chiều' : 'Khứ hồi'}</div>
+											<div><b>Số vé:</b> ${ticketSelling.seatCount}</div>
+											<div><b>Điểm đi:</b> ${ticketSelling.trip.departure}</div>
+											<div><b>Điểm đến:</b> ${ticketSelling.trip.destination}</div>
+											<div><b>Ngày đi:</b> ${formatDate(ticketSelling.trip.startDate)} ${ticketSelling.trip.startTime}</div>
+											<div><b>Ngày về:</b> ${ticketSelling.tripBack ? formatDate(ticketSelling.tripBack.startDate) : ''} ${ticketSelling.tripBack ? ticketSelling.tripBack.startTime : ''}<div>
+											<div><b>Loại ghế:</b> ${ticketSelling.seatType} </div>
+											<div><b>Số kg mang theo:</b> ${ticketSelling.packageWeight} </div>
+											<div><b>Hãng bay:</b> ${ticketSelling.airline}</div>
+										</div>
+									</div>
+
+									<div style="width: 150px; height: 1px; background: #D6D5D5; margin:auto"></div>
+									<div style="font-size:20px; margin-top:15px;margin-bottom:40px;font-weight:700">Chợ vé Services team</div>
 									<div>
-										<div><b>Loại vé:</b> ${ticketSelling.flightType === 'oneWay' ? 'Một chiều' : 'Khứ hồi'}</div>
-										<div><b>Số vé:</b> ${ticketSelling.seatCount}</div>
-										<div><b>Điểm đi:</b> ${ticketSelling.trip.departure}</div>
-										<div><b>Điểm đến:</b> ${ticketSelling.trip.destination}</div>
-										<div><b>Ngày đi:</b> ${formatDate(ticketSelling.trip.startDate)} ${ticketSelling.trip.startTime}</div>
-										<div><b>Ngày về:</b> ${ticketSelling.tripBack ? formatDate(ticketSelling.tripBack.startDate) : ''} ${ticketSelling.tripBack ? ticketSelling.tripBack.startTime : ''}<div>
-										<div><b>Loại ghế:</b> ${ticketSelling.seatType} </div>
-										<div><b>Số kg mang theo:</b> ${ticketSelling.packageWeight} </div>
-										<div><b>Hãng bay:</b> ${ticketSelling.airline}</div>
+										<p style="font-size:12px;color:#B2B2B2;">25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
+										<p style="font-size:12px;color:#B2B2B2;">Hotline: 0913231019</p>
 									</div>
 								</div>
-								<div style="box-sizing:border-box;padding-bottom:20px;padding-right:0;padding-left:0;text-align:center;color:#7b7b7b;" >
-									<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
-									<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >Hotline: 0913231019</p>
-								</div>
 							</div>
-						</div>
+						</body>
 					`
 				};
 

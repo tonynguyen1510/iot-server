@@ -9,6 +9,7 @@
 import { FB } from 'fb';
 import GoogleAuth from 'google-auth-library';
 import Zalo from 'zalo-sdk';
+import path from 'path';
 // import axios from 'axios';
 
 import login from 'src/utils/login';
@@ -54,8 +55,10 @@ export default function (User) {
 			to: user.email,
 			from: 'noreply@chove.vn',
 			subject: 'Thanks for registering.',
+			template: path.resolve(__dirname, '../templates/verify-email.ejs'),
 			redirect: webUrl + '/email-verified',
-			user: user
+			user: user,
+			webUrl,
 		};
 
 		user.verify(options, (err, response) => {
@@ -396,7 +399,6 @@ export default function (User) {
 	});
 
 	User.remindUser = (id, next) => {
-		console.log('asdasdasdasdasdasdasdas', id);
 		const Email = User.app.models.Email;
 
 		User.findById(id, (errUser, user) => {
