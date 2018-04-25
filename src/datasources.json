@@ -13,39 +13,5 @@
 		"user": "chove",
 		"connector": "mongodb",
 		"allowExtendedOperators": true
-	},
-	"emailDs": {
-		"name": "emailDs",
-		"connector": "mail",
-		"transports": [
-			{
-				"type": "smtp",
-				"host": "smtp.gmail.com",
-				"secure": true,
-				"port": 465,
-				"tls": {
-					"rejectUnauthorized": false
-				},
-				"auth": {
-					"user": "vnchove@gmail.com",
-					"pass": "ve@2017vn"
-				}
-			}
-		]
-	},
-	"storage": {
-		"name": "storage",
-		"connector": "loopback-component-storage",
-		"provider": "amazon",
-		"acl": "public-read",
-		"key": "ZXOyW0R7pR3fDLsEBH5I735baTQUyydoin4MGg5C",
-		"keyId": "AKIAJ5IY6XMPCJQWYRRA",
-		"maxFileSize": 20971520,
-		"allowedContentTypes": [
-			"image/jpg",
-			"image/jpeg",
-			"image/png",
-			"image/tiff"
-		]
 	}
 }

@@ -9,7 +9,11 @@
 import { FB } from 'fb';
 import GoogleAuth from 'google-auth-library';
 import Zalo from 'zalo-sdk';
+<<<<<<< HEAD
 import path from 'path';
+=======
+import loopback from 'loopback';
+>>>>>>> 367d10e35e4553f816328e925605b8698a8a51d7
 // import axios from 'axios';
 
 import login from 'src/utils/login';
@@ -20,7 +24,7 @@ const client = new auth.OAuth2(['314929847304-blffjtcncvq4vbc92msgojprhqnudu8i.a
 
 const ZSClient = new Zalo.ZaloSocial({
 	appId: '92423462607218680',
-	redirectUri: 'http://localhost:3004/login-zalo',
+	redirectUri: process.env.WEB_URL + '/login-zalo',
 	appSecret: 'TGt4bW5cO44nHiw3JawE',
 });
 
@@ -44,18 +48,20 @@ export default function (User) {
 		}
 
 		const webUrl = User.app.get('webUrl');
-		// const apiUrl = User.app.get('apiUrl');
+		const apiUrl = User.app.get('apiUrl');
+
+		const [protocol, host] = apiUrl.split('://');
 
 		// send mail
 		const options = {
 			type: 'email',
-			host: 'api.chove.vn',
-			protocol: 'https',
-			port: 443,
+			host,
+			protocol,
+			port: protocol === 'https' ? 443 : 80,
 			to: user.email,
-			from: 'noreply@chove.vn',
-			subject: 'Thanks for registering.',
-			template: path.resolve(__dirname, '../templates/verify-email.ejs'),
+			from: process.env.EMAIL || 'noreply@chove.vn',
+			subject: '[Chove]Chúc mừng bạn đã đăng ký tài khoản thành công.',
+			template: 'src/email/verify.ejs',
 			redirect: webUrl + '/email-verified',
 			user: user,
 			webUrl,
@@ -335,13 +341,16 @@ export default function (User) {
 	// send password reset link when requested
 	User.on('resetPasswordRequest', (info) => {
 		const webUrl = User.app.get('webUrl');
-		const url = webUrl + '/reset-password';
-		const html = 'Click <a href="' + url + '?access_token=' + info.accessToken.id + '">here</a> to reset your password';
+
+		const params = { resetLink: webUrl + '/reset-password?access_token=' + info.accessToken.id };
+
+		const renderer = loopback.template('src/email/reset-password.ejs');
+		const html = renderer(params);
 
 		User.app.models.Email.send({
 			to: info.email,
-			from: 'noreply@chove.vn',
-			subject: 'Password reset',
+			from: process.env.EMAIL || 'noreply@chove.vn',
+			subject: '[Chove]Đặt lại mật khẩu.',
 			html: html
 		}, (err) => {
 			if (err) {
@@ -404,23 +413,36 @@ export default function (User) {
 		User.findById(id, (errUser, user) => {
 			if (errUser) {
 				console.log('errUser', errUser);
-				throw errUser;
+				return next(errUser);
 			}
 
 			Email.send({
-				to: 'maihuunhan30071992@gmail.com',
-				// to: user.email,
+				// to: 'maihuunhan30071992@gmail.com',
+				to: user.email,
 				from: 'noreply@chove.vn',
 				subject: '[Chove]Yêu cầu cung cấp thông tin người dùng',
 				html: `
-					<h1>Chào ${user.fullName}</h1>
-					<p>Để thuận tiện giao dịch trên hệ thống chove.vn, bạn vui lòng cung cấp các thông tin yêu cầu trên trang web chove.vn</p>
-					<p>Cảm ơn</p>
+					<div style="box-sizing:border-box;padding: 40px;max-width:768px;margin-top:auto;margin-bottom:auto;margin-right:auto;margin-left:auto;background-color:#f9fafc;" >
+						<div class="main-email" style="box-sizing:border-box;padding:20px;background-color:#fff;box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);text-align:center;" >
+							<img src="http://35.201.229.48:3004/static/assets/images/logo/1x.png" alt="logo" style="box-sizing:border-box;max-width:120px;height:auto;padding-top:25px;padding-bottom:25px;padding-right:0;padding-left:0;" >
+							<p>Vui lòng liên hệ với người mua vé thông qua</p>
+							<div>
+								<h1>Chào ${user.fullName}</h1>
+								<p>Để thuận tiện giao dịch trên hệ thống chove.vn, bạn vui lòng cung cấp các thông tin yêu cầu trên trang web <a href="${User.app.get('webUrl')}">${User.app.get('webUrl')}</a></p>
+								<p>Cảm ơn!</p>
+							</div>
+							<div style="box-sizing:border-box;padding-bottom:20px;padding-right:0;padding-left:0;text-align:center;color:#7b7b7b;" >
+								<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >25 Lạc Trung, Vĩnh Tuy, Hai Bà Trưng, Hà Nội.</p>
+								<p class="footer__copyright" style="box-sizing:border-box;font-size:14px;margin-top:10px;margin-bottom:0;margin-right:0;margin-left:0;color:#7b7b7b;" >Hotline: 0913231019</p>
+							</div>
+						</div>
+
+					</div>
 				`,
 			}, (err) => {
 				if (err) {
 					console.log('send email error', err);
-					throw err;
+					return next(err);
 				}
 				next();
 			});

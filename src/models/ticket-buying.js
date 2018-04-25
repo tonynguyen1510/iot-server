@@ -43,8 +43,6 @@ export default function (TicketBuying) {
 				}),
 
 			]).then(([contactor, creator]) => {
-				const webUrl = TicketBuying.app.get('webUrl');
-
 				const _sendEmailToContactor = new Promise((resolve) => {
 					Email.send({
 						// to: 'maihuunhan30071992@gmail.com',
@@ -61,7 +59,7 @@ export default function (TicketBuying) {
 									padding: 50px 80px;
 									max-width: 768px;
 									margin: auto;
-									background-image: url('${webUrl}/static/assets/images/email-background.png');
+									background-image: url('https://chove.vn/email-background.png');
 									background-size: cover;
 									font-family: Roboto;
 								">
@@ -74,7 +72,7 @@ export default function (TicketBuying) {
 										text-align:center;
 										color: #606060;
 									">
-										<img src="${webUrl}/static/assets/images/logo/2x.png" width="200" />
+										<img src="https://chove.vn/logo/2x.png" width="200" />
 										<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
 										<div style="font-size: 20px">Bạn đã đăng ký bán vé</div>
 										<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
@@ -121,7 +119,7 @@ export default function (TicketBuying) {
 									padding: 50px 80px;
 									max-width: 768px;
 									margin: auto;
-									background-image: url('${webUrl}/static/assets/images/email-background.png');
+									background-image: url('https://chove.vn/email-background.png');
 									background-size: cover;
 									font-family: Roboto;
 								">
@@ -134,7 +132,7 @@ export default function (TicketBuying) {
 										text-align:center;
 										color: #606060;
 									">
-										<img src="${webUrl}/static/assets/images/logo/2x.png" width="200" />
+										<img src="https://chove.vn/logo/2x.png" width="200" />
 										<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
 										<div style="font-size: 20px">Chúc mừng đã có người đăng ký để bán vé cho bạn</div>
 										<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">

@@ -11,16 +11,17 @@ import boot from 'loopback-boot';
 import morgan from 'morgan';
 import PrettyError from 'pretty-error';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const app = loopback();
 
 // require('loopback-counts-mixin')(app);
 
-if (process.env.NODE_ENV !== 'production') {
-	const prettyError = new PrettyError();
+const prettyError = new PrettyError();
 
-	prettyError.start();
-}
+prettyError.start();
 
 // configure body parser
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -35,7 +36,7 @@ app.start = function () {
 		app.emit('started');
 		const baseUrl = app.get('url').replace(/\/$/, '');
 
-		console.log('Web server listening at: %s', baseUrl);
+		console.log('REST API server listening at: %s', baseUrl);
 		if (app.get('loopback-component-explorer')) {
 			const explorerPath = app.get('loopback-component-explorer').mountPath;
 
