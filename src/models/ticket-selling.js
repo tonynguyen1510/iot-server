@@ -84,7 +84,7 @@ export default function (TicketSelling) {
 								padding: 50px 80px;
 								max-width: 768px;
 								margin: auto;
-								background-image: url('https://chove.vn/email-background.png');
+								background-image: url('https://s3-ap-southeast-1.amazonaws.com/chove.vn/static/email-background.png');
 								background-size: cover;
 								font-family: Roboto;
 							">
@@ -97,7 +97,7 @@ export default function (TicketSelling) {
 									text-align:center;
 									color: #606060;
 								">
-									<img src="https://chove.vn/logo/2x.png" width="200" />
+									<img src="https://s3-ap-southeast-1.amazonaws.com/chove.vn/static/2x.png" width="200" />
 									<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
 									<div style="font-size: 20px">Chúc mừng bạn đã mua vé thành công</div>
 									<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
@@ -139,7 +139,7 @@ export default function (TicketSelling) {
 								padding: 50px 80px;
 								max-width: 768px;
 								margin: auto;
-								background-image: url('https://chove.vn/email-background.png');
+								background-image: url('https://s3-ap-southeast-1.amazonaws.com/chove.vn/static/email-background.png');
 								background-size: cover;
 								font-family: Roboto;
 							">
@@ -152,7 +152,7 @@ export default function (TicketSelling) {
 									text-align:center;
 									color: #606060;
 								">
-									<img src="https://chove.vn/logo/2x.png" width="200" />
+									<img src="https://s3-ap-southeast-1.amazonaws.com/chove.vn/static/2x.png" width="200" />
 									<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
 									<div style="font-size: 20px">Chúc mừng đã có người mua vé của bạn</div>
 									<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
@@ -223,7 +223,7 @@ export default function (TicketSelling) {
 								padding: 50px 80px;
 								max-width: 768px;
 								margin: auto;
-								background-image: url('https://chove.vn/email-background.png');
+								background-image: url('https://s3-ap-southeast-1.amazonaws.com/chove.vn/static/email-background.png');
 								background-size: cover;
 								font-family: Roboto;
 							">
@@ -236,7 +236,7 @@ export default function (TicketSelling) {
 									text-align:center;
 									color: #606060;
 								">
-									<img src="https://chove.vn/logo/2x.png" width="200" />
+									<img src="https://s3-ap-southeast-1.amazonaws.com/chove.vn/static/2x.png" width="200" />
 									<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
 									<div style="font-size: 20px">Bạn đã đăng ký mua vé thành công</div>
 									<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
@@ -268,7 +268,7 @@ export default function (TicketSelling) {
 								padding: 50px 80px;
 								max-width: 768px;
 								margin: auto;
-								background-image: url('https://chove.vn/email-background.png');
+								background-image: url('https://s3-ap-southeast-1.amazonaws.com/chove.vn/static/email-background.png');
 								background-size: cover;
 								font-family: Roboto;
 							">
@@ -281,7 +281,7 @@ export default function (TicketSelling) {
 									text-align:center;
 									color: #606060;
 								">
-									<img src="https://chove.vn/logo/2x.png" width="200" />
+									<img src="https://s3-ap-southeast-1.amazonaws.com/chove.vn/static/2x.png" width="200" />
 									<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
 									<div style="font-size: 20px">Thông tin người mua vé</div>
 									<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
@@ -331,7 +331,7 @@ export default function (TicketSelling) {
 								padding: 50px 80px;
 								max-width: 768px;
 								margin: auto;
-								background-image: url('https://chove.vn/email-background.png');
+								background-image: url('https://s3-ap-southeast-1.amazonaws.com/chove.vn/static/email-background.png');
 								background-size: cover;
 								font-family: Roboto;
 							">
@@ -344,7 +344,7 @@ export default function (TicketSelling) {
 									text-align:center;
 									color: #606060;
 								">
-									<img src="https://chove.vn/logo/2x.png" width="200" />
+									<img src="https://s3-ap-southeast-1.amazonaws.com/chove.vn/static/2x.png" width="200" />
 									<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
 									<div style="font-size: 20px">Bạn đã đấu giá thành công</div>
 									<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
@@ -519,7 +519,7 @@ export default function (TicketSelling) {
 								padding: 50px 80px;
 								max-width: 768px;
 								margin: auto;
-								background-image: url('https://chove.vn/email-background.png');
+								background-image: url('https://s3-ap-southeast-1.amazonaws.com/chove.vn/static/email-background.png');
 								background-size: cover;
 								font-family: Roboto;
 							">
@@ -532,7 +532,7 @@ export default function (TicketSelling) {
 									text-align:center;
 									color: #606060;
 								">
-									<img src="https://chove.vn/logo/2x.png" width="200" />
+									<img src="https://s3-ap-southeast-1.amazonaws.com/chove.vn/static/2x.png" width="200" />
 									<h2 style="font-size: 28px">Chào mừng bạn đến với dịch vụ của Chợ vé</h2>
 									<div style="font-size: 20px">Chúc mừng bạn đã mua vé thành công</div>
 									<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
