@@ -71,11 +71,10 @@ export default function (User) {
 			}
 
 			console.log('> verification email sent:', response);
-
-			if (typeof next === 'function') {
-				next();
-			}
 		});
+		if (typeof next === 'function') {
+			next();
+		}
 	};
 
 	User.beforeRemote('create', (ctx, u, next) => {
