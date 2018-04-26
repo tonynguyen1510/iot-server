@@ -419,7 +419,7 @@ export default function (User) {
 				html: `
 					<div style="box-sizing:border-box;padding: 40px;max-width:768px;margin-top:auto;margin-bottom:auto;margin-right:auto;margin-left:auto;background-color:#f9fafc;" >
 						<div class="main-email" style="box-sizing:border-box;padding:20px;background-color:#fff;box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);text-align:center;" >
-							<img src="http://35.201.229.48:3004/static/assets/images/logo/1x.png" alt="logo" style="box-sizing:border-box;max-width:120px;height:auto;padding-top:25px;padding-bottom:25px;padding-right:0;padding-left:0;" >
+							<img src="https://s3-ap-southeast-1.amazonaws.com/chove.vn/static/2x.png" alt="logo" style="box-sizing:border-box;max-width:120px;height:auto;padding-top:25px;padding-bottom:25px;padding-right:0;padding-left:0;" >
 							<p>Vui lòng liên hệ với người mua vé thông qua</p>
 							<div>
 								<h1>Chào ${user.fullName}</h1>
