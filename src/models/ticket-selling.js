@@ -459,13 +459,18 @@ export default function (TicketSelling) {
 		next();
 	});
 
-	TicketSelling.beforeRemote('create', (ctx, ticketSelling, next) => {
+	TicketSelling.beforeRemote('create', (ctx, ticket, next) => {
 		const FBFeed = TicketSelling.app.models.FBFeed;
+		const { data: ticketSelling = {} } = ctx.args;
 
 		if (ticketSelling.fbFeedId) {
-			FBFeed.findById(ticketSelling.fbFeedId, (fbFeed) => {
+			FBFeed.findById(ticketSelling.fbFeedId, (err, fbFeed) => {
+				if (err) {
+					throw err;
+				}
 				ticketSelling.fbFeed = fbFeed.toObject();
 				ticketSelling.approved = true;
+				ticketSelling.dueDate = ticketSelling.trip.startDate;
 
 				fbFeed.status = 'approved';
 

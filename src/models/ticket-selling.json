@@ -72,6 +72,12 @@
 			"type": "boolean",
 			"default": false
 		},
+		"fbFeedId": {
+			"type": "string"
+		},
+		"fbFeed": {
+			"type": "object"
+		},
 		"trip": {
 			"type": {
 				"departure": {
@@ -145,12 +151,6 @@
 			"type": "belongsTo",
 			"model": "user",
 			"foreignKey": "creatorId",
-			"required": true
-		},
-		"fbFeed": {
-			"type": "belongsTo",
-			"model": "FBFeed",
-			"foreignKey": "fbFeedId",
 			"required": true
 		}
 	},

@@ -280,6 +280,7 @@ export default function (TicketBuying) {
 				}
 				ticketBuying.fbFeed = fbFeed.toObject();
 				ticketBuying.approved = true;
+				ticketBuying.dueDate = ticketBuying.trip.startDate;
 
 				fbFeed.status = 'approved';
 

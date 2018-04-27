@@ -72,6 +72,9 @@
 		"fbFeedId": {
 			"type": "string"
 		},
+		"fbFeed": {
+			"type": "object"
+		},
 		"trip": {
 			"type": {
 				"departure": {
