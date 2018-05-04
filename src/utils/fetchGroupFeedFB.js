@@ -19,26 +19,34 @@ export default function fetchGroupFeedFB(job, done) {
 	const unixtime = data.unixtime || startOfDay(Date.now()).getTime() / 1000;
 	const FBFeed = app.models.FBFeed;
 	const FBGroup = app.models.FBGroup;
-	const User = app.models.user;
+	const FBToken = app.models.FBToken;
 
 	/* eslint-disable camelcase */
-	User.findOne({ where: { email: 'admin@chove.vn' } }, (err, user) => {
-		if (err) {
+	FBToken.findOne({}, (err, fbToken) => {
+		if (err || !fbToken) {
 			console.log('err', err);
+			return done();
 		}
 
 		const _fetchGroupFeed = (groupId) => {
+			console.log('groupId', groupId);
 			return new Promise((resolveGroup) => {
 				// FB.api(`${groupId}/feed`, {
 				FB.api(`${groupId}/feed?since=${unixtime}`, {
 
 					// FB.api(`${groupId}/feed`, {
 					fields: ['message', 'from{picture, name}', 'story'],
-					access_token: user.fbToken,
+					access_token: fbToken.token,
 				}, (res1) => {
-					console.log('res1', res1);
+					if (res1.error) {
+						fbToken.token = '';
+						return fbToken.save({}, () => {
+							return done();
+						});
+					}
+
 					if (!res1 || !res1.data) {
-						return done();
+						return resolveGroup();
 					}
 
 					Promise.all(res1.data.map((item) => {
@@ -53,7 +61,7 @@ export default function fetchGroupFeedFB(job, done) {
 						}
 
 						return new Promise((resolve) => {
-							FBFeed.findOrCreate({ where: { feedFbId: fbFeedItem.feedFbId } }, fbFeedItem, (err1, returnedFlight) => {
+							FBFeed.findOrCreate({ where: { id: fbFeedItem.id } }, fbFeedItem, (err1, returnedFlight) => {
 								if (err1) {
 									throw err1;
 								}

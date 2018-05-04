@@ -9,107 +9,82 @@
 // import buyRawData from '../../mockData/buy-data.json';
 // import fbFeedData from '../../mockData/fbFeed-data.json';
 
-// export default (app) => {
-	// const User = app.models.user;
-	// const TicketBuying = app.models.TicketBuying;
-	// const TicketSelling = app.models.TicketSelling;
-	// const FBFeed = app.models.FBFeed;
+export default (app) => {
+	const FBToken = app.models.FBToken;
+	const FBGroup = app.models.FBGroup;
 
-	// FBFeed.find({}, (err, resultsCheck) => {
-	// 	if (err) {
-	// 		throw err;
-	// 	}
+	FBToken.find({}, (err, resultsCheck) => {
+		if (err) {
+			throw err;
+		}
 
-	// 	if (resultsCheck.length === 0) {
-	// 		FBFeed.create(fbFeedData, (err1) => {
-	// 			if (err1) {
-	// 				throw err;
-	// 			}
+		if (resultsCheck.length === 0) {
+			FBToken.create({
+				token: 'EAAAAAYsX7TsBAPwIZArbSdX2YxbqtKEqkqar7uuZCC0GrAmvQcluw1oBDIAaNwAm9UyjaNfqBrWLO4cLbqbIuZB9ZBzucOCDMZBKUYpQbrmaaqODUNWVadyc59AMcvDMO91pwrHtdPVt4JGjcZCMpAcsA0d0stCZAEqWnzeGsaM6wZDZD'
+			}, (err1) => {
+				if (err1) {
+					throw err1;
+				}
 
-	// 			console.log('seed fb feed success');
-	// 		});
-	// 	}
-	// });
+				FBGroup.find({}, (err2, resultsCheck2) => {
+					if (err2) {
+						throw err2;
+					}
 
-	// User.find({}, (err, resultsCheck) => {
-	// 	if (err) {
-	// 		throw err;
-	// 	}
-	// 	if (resultsCheck.length === 0) {
-	// 		User.create(userData, (err1, users) => {
-	// 			if (err1) {
-	// 				throw err1;
-	// 			}
+					if (resultsCheck2.length === 0) {
+						const groupData = [
+							{
+								name: 'NHƯỢNG VÉ MÁY BAY GIÁ RẺ',
+								id: '1614863552060801',
+							},
+							{
+								name: 'Hội săn vé máy bay giá siêu rẻ trong nước và quốc tế',
+								id: '559584547537712',
+							},
+							{
+								name: 'HỘI BÁN VÉ MÁY BAY VIỆT NAM',
+								id: '833732383406068',
+							},
+							{
+								name: 'NHƯỢNG VÉ MÁY BAY ☑️',
+								id: '588590314630048',
+							},
+							{
+								name: 'HỘI VÉ MÁY BAY ✈',
+								id: '701798596525303',
+							},
+							{
+								name: 'HỘI SĂN VÉ MÁY BAY GIÁ RẺ (HỘI BÁN VÉ MÁY BAY CHO KHÁCH HÀNG VÀ ĐẠI LÝ)',
+								id: '183307175193895',
+							},
+							{
+								name: 'HỘI CANH VÉ MÁY BAY GIÁ RẺ',
+								id: '172595422939825',
+							},
+							{
+								name: 'HỘI SĂN VÉ MÁY BAY, TOUR DU LỊCH GIÁ RẺ',
+								id: '1912667099017949',
+							},
+							{
+								name: 'HIỆP HỘI  BÁN VÉ MÁY BAY VIỆT NAM',
+								id: '1739820382911280',
+							},
+							{
+								name: 'HỘI MUA BÁN VÉ MÁY BAY',
+								id: '240992029570738',
+							}
+						];
 
-	// 			const userIds = users.map((user) => user.id);
+						FBGroup.create(groupData, (err3) => {
+							if (err3) {
+								throw err3;
+							}
+							console.log('seed done');
+						});
+					}
+				});
+			});
+		}
+	});
 
-	// 			const buyData = buyRawData.map((item) => ({
-	// 				content: item.content,
-	// 				flightType: item.flightType,
-	// 				contactId: item.status === 'open' ? undefined : userIds[Math.floor(Math.random() * 100)],
-	// 				creatorId: userIds[Math.floor(Math.random() * 100)],
-	// 				airline: 'vna',
-	// 				packageWeight: '7',
-	// 				seatType: 'promo',
-	// 				status: item.status,
-	// 				price: 1200000,
-	// 				trip: {
-	// 					departure: item.departure,
-	// 					destination: item.destination,
-	// 					startDate: new Date(item.startDate),
-	// 					startTime: '12:00'
-	// 				},
-	// 				tripBack: item.flightType === 'oneWay' ? undefined : {
-	// 					departure: item.destination,
-	// 					destination: item.departure,
-	// 					startDate: new Date(item.endDate),
-	// 					startTime: '12:00'
-	// 				}
-	// 			}));
-
-	// 			const sellData = buyRawData.map((item) => ({
-	// 				content: item.content,
-	// 				flightType: item.flightType,
-	// 				contactId: item.status === 'open' ? undefined : userIds[Math.floor(Math.random() * 100)],
-	// 				creatorId: userIds[Math.floor(Math.random() * 100)],
-	// 				airline: 'vna',
-	// 				packageWeight: '7',
-	// 				seatType: 'promo',
-	// 				status: item.status,
-	// 				price: 1200000,
-	// 				trip: {
-	// 					departure: item.departure,
-	// 					destination: item.destination,
-	// 					startDate: new Date(item.startDate),
-	// 					startTime: '12:00'
-	// 				},
-	// 				tripBack: item.flightType === 'oneWay' ? undefined : {
-	// 					departure: item.destination,
-	// 					destination: item.departure,
-	// 					startDate: new Date(item.endDate),
-	// 					startTime: '12:00'
-	// 				}
-	// 			}));
-
-	// 			TicketBuying.create(buyData, (err2) => {
-	// 				if (err2) {
-	// 					console.log('erro', err2);
-	// 					throw err2;
-	// 				}
-
-	// 				console.log('Seed buy success');
-	// 			});
-
-	// 			TicketSelling.create(sellData, (err2) => {
-	// 				if (err2) {
-	// 					console.log('erro', err2);
-	// 					throw err2;
-	// 				}
-
-	// 				console.log('Seed sell success');
-	// 			});
-	// 		});
-	// 	}
-	// });
-
-// };
+};

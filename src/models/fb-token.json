@@ -1,0 +1,26 @@
+{
+	"name": "FBToken",
+	"plural": "fb-tokens",
+	"base": "PersistedModel",
+	"options": {
+		"validateUpsert": true
+	},
+	"properties": {
+		"createdAt": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"updatedAt": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"token": {
+			"type": "string",
+			"require": true
+		}
+	},
+	"validations": [],
+	"relations": {},
+	"acls": [],
+	"methods": {}
+}
