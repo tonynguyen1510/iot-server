@@ -7,29 +7,29 @@
 *------------------------------------------------------- */
 // import userData from '../../mockData/user-data.json';
 // import buyRawData from '../../mockData/buy-data.json';
-import fbFeedData from '../../mockData/fbFeed-data.json';
+// import fbFeedData from '../../mockData/fbFeed-data.json';
 
-export default (app) => {
+// export default (app) => {
 	// const User = app.models.user;
 	// const TicketBuying = app.models.TicketBuying;
 	// const TicketSelling = app.models.TicketSelling;
-	const FBFeed = app.models.FBFeed;
+	// const FBFeed = app.models.FBFeed;
 
-	FBFeed.find({}, (err, resultsCheck) => {
-		if (err) {
-			throw err;
-		}
+	// FBFeed.find({}, (err, resultsCheck) => {
+	// 	if (err) {
+	// 		throw err;
+	// 	}
 
-		if (resultsCheck.length === 0) {
-			FBFeed.create(fbFeedData, (err1) => {
-				if (err1) {
-					throw err;
-				}
+	// 	if (resultsCheck.length === 0) {
+	// 		FBFeed.create(fbFeedData, (err1) => {
+	// 			if (err1) {
+	// 				throw err;
+	// 			}
 
-				console.log('seed fb feed success');
-			});
-		}
-	});
+	// 			console.log('seed fb feed success');
+	// 		});
+	// 	}
+	// });
 
 	// User.find({}, (err, resultsCheck) => {
 	// 	if (err) {
@@ -112,4 +112,4 @@ export default (app) => {
 	// 	}
 	// });
 
-};
+// };

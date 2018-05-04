@@ -80,5 +80,9 @@
 	"Rating": {
 		"dataSource": "mongod",
 		"public": true
+	},
+	"FBGroup": {
+		"dataSource": "mongod",
+		"public": true
 	}
 }

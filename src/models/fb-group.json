@@ -1,0 +1,32 @@
+{
+	"name": "FBGroup",
+	"plural": "fb-groups",
+	"base": "PersistedModel",
+	"idInjection": false,
+	"options": {
+		"validateUpsert": true
+	},
+	"properties": {
+		"createdAt": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"id": {
+			"type": "string",
+			"require": true,
+			"id": true
+		},
+		"name": {
+			"type": "string",
+			"require": true
+		},
+		"active": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"validations": [],
+	"relations": {},
+	"acls": [],
+	"methods": {}
+}
