@@ -14,9 +14,9 @@ const startOfDay = (dirtyDate) => {
 };
 
 export default function fetchGroupFeedFB(job, done) {
-	const data = job.attrs.data || {};
+	// const data = job.attrs.data || {};
 	// const accessToken = data.fbAccessToken || defaultAccessToken;
-	const unixtime = data.unixtime || startOfDay(Date.now()).getTime() / 1000;
+	const unixtime = startOfDay(Date.now()).getTime() / 1000;
 	const FBFeed = app.models.FBFeed;
 	const FBGroup = app.models.FBGroup;
 	const FBToken = app.models.FBToken;

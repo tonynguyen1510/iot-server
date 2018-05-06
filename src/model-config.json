@@ -88,5 +88,9 @@
 	"FBToken": {
 		"dataSource": "mongod",
 		"public": true
+	},
+	"IPTracking": {
+		"dataSource": "mongod",
+		"public": true
 	}
 }

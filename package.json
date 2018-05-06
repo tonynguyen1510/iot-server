@@ -32,6 +32,7 @@
     "loopback-counts-mixin": "^1.0.1",
     "morgan": "^1.9.0",
     "nodemon": "^1.12.1",
+    "request-ip": "^2.0.2",
     "serve-favicon": "^2.0.1",
     "slugify": "^1.2.9",
     "strong-error-handler": "^2.0.0",

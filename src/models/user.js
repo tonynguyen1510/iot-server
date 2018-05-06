@@ -14,6 +14,7 @@ import loopback from 'loopback';
 
 import login from 'src/utils/login';
 import predefined from 'src/constant/predefined';
+import requestIp from 'request-ip';
 
 const auth = new GoogleAuth();
 const client = new auth.OAuth2(['314929847304-blffjtcncvq4vbc92msgojprhqnudu8i.apps.googleusercontent.com'], 'YIk4yZaKBMBynZentZX2MnLl', '');
@@ -443,5 +444,29 @@ export default function (User) {
 			});
 		});
 	};
+
+	User.afterRemote('login', (ctx, modelInstance, next) => {
+		const clientIp = requestIp.getClientIp(ctx.req);
+		const IPTracking = User.app.models.IPTracking;
+
+		User.findById(modelInstance.userId, (err, currentUser) => {
+			if (err) {
+				throw err;
+			}
+
+			IPTracking.create({
+				username: currentUser.username,
+				email: currentUser.email,
+				ip: clientIp,
+			}, (err2) => {
+				if (err2) {
+					console.log('err tracking ip');
+					throw err;
+				}
+
+				next();
+			});
+		});
+	});
 }
 
