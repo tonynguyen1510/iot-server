@@ -67,7 +67,7 @@ const normalizeCredentials = (credentials, realmRequired, realmDelimiter) => {
 	return query;
 };
 
-export default function (credentials, include, fn) {
+export default function (credentials, include = '{}', fn) {
 	const self = this;
 
 	if (typeof include === 'function') {
@@ -77,14 +77,14 @@ export default function (credentials, include, fn) {
 
 	fn = fn || utils.createPromiseCallback();
 
-	include = (include || '');
-	if (Array.isArray(include)) {
-		include = include.map(function (val) {
-			return val.toLowerCase();
-		});
-	} else {
-		include = include.toLowerCase();
-	}
+	// include = (include || '');
+	// if (Array.isArray(include)) {
+	// 	include = include.map(function (val) {
+	// 		return val.toLowerCase();
+	// 	});
+	// } else {
+	// 	include = include.toLowerCase();
+	// }
 
 	let realmDelimiter;
 	// Check if realm is required
@@ -114,7 +114,10 @@ export default function (credentials, include, fn) {
 		return fn.promise;
 	}
 
-	self.findOne({ where: query }, function (err, user) {
+	self.findOne({
+		...JSON.parse(include),
+		where: query,
+	}, function (err, user) {
 		const defaultError = new Error(g.f('login failed'));
 
 		defaultError.statusCode = 401;

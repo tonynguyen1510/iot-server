@@ -20,7 +20,7 @@ export default function (TicketSelling) {
 				Email.send({
 					// to: 'maihuunhan30071992@gmail.com',
 					to: user.email,
-					from: 'noreply@chove.vn',
+					from: `"${process.env.EMAIL_NAME || 'Chove Support Team'}" <${process.env.EMAIL || 'noreply@chove.vn'}>`,
 					subject: email.subject,
 					html: email.html,
 				}, (err) => {
@@ -73,7 +73,7 @@ export default function (TicketSelling) {
 
 			]).then(([contactor, creator]) => {
 				const closedBuyerEmail = {
-					subject: '[Chove]Bạn đã bán vé thành công',
+					subject: '[Chove] Bạn đã bán vé thành công',
 					html: `
 						<head>
 							<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -128,7 +128,7 @@ export default function (TicketSelling) {
 				};
 
 				const closedSellerEmail = {
-					subject: '[Chove]Bạn đã bán vé thành công',
+					subject: '[Chove] Bạn đã bán vé thành công',
 					html: `
 						<head>
 							<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -212,7 +212,7 @@ export default function (TicketSelling) {
 
 			]).then(([contactor, creator]) => {
 				const pendingBuyerEmail = {
-					subject: '[Chove]Thông tin thanh toán',
+					subject: '[Chove] Thông tin thanh toán',
 					html: `
 						<head>
 							<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -257,7 +257,7 @@ export default function (TicketSelling) {
 				};
 
 				const pendingSellerEmail = {
-					subject: '[Chove]Thông tin người mua vé',
+					subject: '[Chove] Thông tin người mua vé',
 					html: `
 						<head>
 							<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -320,7 +320,7 @@ export default function (TicketSelling) {
 				}
 
 				const pendingBuyerEmail = {
-					subject: '[Chove]Thông tin thanh toán',
+					subject: '[Chove] Thông tin thanh toán',
 					html: `
 						<head>
 							<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -488,7 +488,7 @@ export default function (TicketSelling) {
 				Email.send({
 					// to: 'maihuunhan30071992@gmail.com',
 					to: user.email,
-					from: 'noreply@chove.vn',
+					from: `"${process.env.EMAIL_NAME || 'Chove Support Team'}" <${process.env.EMAIL || 'noreply@chove.vn'}>`,
 					subject: email.subject,
 					html: email.html,
 				}, (err) => {
@@ -513,7 +513,7 @@ export default function (TicketSelling) {
 				next();
 			} else {
 				const closedBuyerEmail = {
-					subject: '[Chove]Bạn đã bán vé thành công',
+					subject: '[Chove] Bạn đã bán vé thành công',
 					html: `
 						<head>
 							<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
