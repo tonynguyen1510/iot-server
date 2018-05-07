@@ -216,7 +216,7 @@ export default function (User) {
 
 				if (!userCheck) {
 					User.create(userData, (errCreate, userCreate) => {
-						if (err) {
+						if (errCreate) {
 							return next({ ...errCreate });
 						}
 
@@ -294,7 +294,7 @@ export default function (User) {
 
 				if (!userCheck) {
 					User.create(userData, (errCreate, userCreate) => {
-						if (err) {
+						if (errCreate) {
 							return next({ ...errCreate });
 						}
 
