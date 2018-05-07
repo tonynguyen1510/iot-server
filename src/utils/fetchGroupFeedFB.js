@@ -61,11 +61,22 @@ export default function fetchGroupFeedFB(job, done) {
 						}
 
 						return new Promise((resolve) => {
-							FBFeed.findOrCreate({ where: { id: fbFeedItem.id } }, fbFeedItem, (err1, returnedFlight) => {
-								if (err1) {
-									throw err1;
+							FBFeed.findById(fbFeedItem.id, (errFind, fbFeed) => {
+								if (errFind) {
+									throw errFind;
 								}
-								resolve(returnedFlight);
+
+								if (fbFeed) {
+									resolve(fbFeed);
+								} else {
+									FBFeed.create(fbFeedItem, (errCreate, returnedFBFeed) => {
+										if (errCreate) {
+											throw errCreate;
+										}
+										resolve(returnedFBFeed);
+									});
+								}
+
 							});
 						});
 					})).then(() => {
