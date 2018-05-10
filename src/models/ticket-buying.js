@@ -47,8 +47,8 @@ export default function (TicketBuying) {
 					Email.send({
 						// to: 'maihuunhan30071992@gmail.com',
 						to: contactor.email,
-						from: 'noreply@chove.vn',
-						subject: '[Chove]Thông tin người mua vé',
+						from: `"${process.env.EMAIL_NAME || 'Chove Support Team'}" <${process.env.EMAIL || 'noreply@chove.vn'}>`,
+						subject: '[Chove] Thông tin người mua vé',
 						html: `
 							<head>
 								<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -107,8 +107,8 @@ export default function (TicketBuying) {
 					Email.send({
 						// to: 'maihuunhan30071992@gmail.com',
 						to: creator.email,
-						from: 'noreply@chove.vn',
-						subject: '[Chove]Đã có người đăng ký bán vé cho bạn',
+						from: `"${process.env.EMAIL_NAME || 'Chove Support Team'}" <${process.env.EMAIL || 'noreply@chove.vn'}>`,
+						subject: '[Chove] Đã có người đăng ký bán vé cho bạn',
 						html: `
 							<head>
 								<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>

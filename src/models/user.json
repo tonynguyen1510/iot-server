@@ -285,6 +285,16 @@
 					"arg": "ttl",
 					"type": "number",
 					"description": "Time to live (seconds) (2 weeks by default)"
+				},
+				{
+					"arg": "include",
+					"type": [
+						"string"
+					],
+					"http": {
+						"source": "query"
+					},
+					"description": "Related objects to include in the response. See the description of return value for more details."
 				}
 			],
 			"returns": {
@@ -309,9 +319,24 @@
 					"required": true
 				},
 				{
+					"arg": "referralId",
+					"type": "string",
+					"description": "Referral id"
+				},
+				{
 					"arg": "ttl",
 					"type": "number",
 					"description": "Time to live (seconds) (2 weeks by default)"
+				},
+				{
+					"arg": "include",
+					"type": [
+						"string"
+					],
+					"http": {
+						"source": "query"
+					},
+					"description": "Related objects to include in the response. See the description of return value for more details."
 				}
 			],
 			"returns": {
@@ -336,10 +361,25 @@
 					"required": true
 				},
 				{
+					"arg": "referralId",
+					"type": "string",
+					"description": "Referral id"
+				},
+				{
 					"arg": "ttl",
 					"type": "number",
 					"description": "Time to live (seconds) (2 weeks by default)"
-					}
+				},
+				{
+					"arg": "include",
+					"type": [
+						"string"
+					],
+					"http": {
+						"source": "query"
+					},
+					"description": "Related objects to include in the response. See the description of return value for more details."
+				}
 			],
 			"returns": {
 				"arg": "result",

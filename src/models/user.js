@@ -56,8 +56,8 @@ export default function (User) {
 			protocol,
 			port: protocol === 'https' ? 443 : 80,
 			to: user.email,
-			from: process.env.EMAIL || 'noreply@chove.vn',
-			subject: '[Chove]Chúc mừng bạn đã đăng ký tài khoản thành công.',
+			from: `"${process.env.EMAIL_NAME || 'Chove Support Team'}" <${process.env.EMAIL || 'noreply@chove.vn'}>`,
+			subject: '[Chove] Chúc mừng bạn đã đăng ký tài khoản thành công.',
 			template: 'src/email/verify.ejs',
 			redirect: webUrl + '/email-verified',
 			user: user,
@@ -97,7 +97,7 @@ export default function (User) {
 
 	User.login = login;
 
-	User.loginZalo = (accessToken, email, username, ttl, next) => {
+	User.loginZalo = (accessToken, email, username, ttl, include = '{}', next) => {
 		ZSClient.getAccessTokenByOauthCode(accessToken, function (response) {
 			if (response && response.access_token) {
 				ZSClient.setAccessToken(response.access_token);
@@ -113,7 +113,7 @@ export default function (User) {
 									email: userCheck.email,
 									password: passwordDefault,
 									ttl
-								}, 'user', function (errLogin, token) {
+								}, include, function (errLogin, token) {
 									if (errLogin) {
 										return next({ ...errLogin });
 									}
@@ -158,7 +158,7 @@ export default function (User) {
 													email: userCreate.email,
 													password: passwordDefault,
 													ttl
-												}, 'user', function (errLogin, token) {
+												}, include, function (errLogin, token) {
 													if (errLogin) {
 														return next({ ...errLogin });
 													}
@@ -183,7 +183,7 @@ export default function (User) {
 		});
 	};
 
-	User.loginFacebook = (accessToken, ttl, next) => {
+	User.loginFacebook = (accessToken, ttl, include = '{}', next) => {
 		FB.api('me', { fields: 'email,name,gender,picture,link', 'access_token': accessToken }, function (res) {
 			if (res.error) {
 				return next({ ...res.error });
@@ -226,7 +226,7 @@ export default function (User) {
 							email: userCreate.email,
 							password: passwordDefault,
 							ttl
-						}, 'user', function (errLogin, token) {
+						}, include, function (errLogin, token) {
 							if (errLogin) {
 								return next({ ...errLogin });
 							}
@@ -240,7 +240,7 @@ export default function (User) {
 							email: userCheck.email,
 							password: passwordDefault,
 							ttl
-						}, 'user', function (errLogin, token) {
+						}, include, function (errLogin, token) {
 							if (errLogin) {
 								return next({ ...errLogin });
 							}
@@ -255,7 +255,7 @@ export default function (User) {
 		});
 	};
 
-	User.loginGoogle = (accessToken, ttl, next) => {
+	User.loginGoogle = (accessToken, ttl, include = '{}', next) => {
 		client.verifyIdToken(accessToken, ['671782562952-rhmgci05iqn7bfg7l380c24ftb2kq5r5.apps.googleusercontent.com'], function (e, res) {
 			if (e) {
 				return next(e);
@@ -304,7 +304,7 @@ export default function (User) {
 							email: userCreate.email,
 							password: passwordDefault,
 							ttl
-						}, 'user', function (errLogin, token) {
+						}, include, function (errLogin, token) {
 							if (errLogin) {
 								return next({ ...errLogin });
 							}
@@ -318,7 +318,7 @@ export default function (User) {
 							email: userCheck.email,
 							password: passwordDefault,
 							ttl
-						}, 'user', function (errLogin, token) {
+						}, include, function (errLogin, token) {
 							if (errLogin) {
 								return next({ ...errLogin });
 							}
@@ -345,12 +345,12 @@ export default function (User) {
 
 		User.app.models.Email.send({
 			to: info.email,
-			from: process.env.EMAIL || 'noreply@chove.vn',
-			subject: '[Chove]Đặt lại mật khẩu.',
+			from: `"${process.env.EMAIL_NAME || 'Chove Support Team'}" <${process.env.EMAIL || 'noreply@chove.vn'}>`,
+			subject: '[Chove] Đặt lại mật khẩu.',
 			html: html
 		}, (err) => {
 			if (err) {
-				return console.log('> error sending password reset email');
+				return console.log('> error sending password reset email', err);
 			}
 			console.log('> sending password reset email to:', info.email);
 		});
@@ -415,8 +415,8 @@ export default function (User) {
 			Email.send({
 				// to: 'maihuunhan30071992@gmail.com',
 				to: user.email,
-				from: 'noreply@chove.vn',
-				subject: '[Chove]Yêu cầu cung cấp thông tin người dùng',
+				from: `"${process.env.EMAIL_NAME || 'Chove Support Team'}" <${process.env.EMAIL || 'noreply@chove.vn'}>`,
+				subject: '[Chove] Yêu cầu cung cấp thông tin người dùng',
 				html: `
 					<div style="box-sizing:border-box;padding: 40px;max-width:768px;margin-top:auto;margin-bottom:auto;margin-right:auto;margin-left:auto;background-color:#f9fafc;" >
 						<div class="main-email" style="box-sizing:border-box;padding:20px;background-color:#fff;box-shadow:0px 0px 17px rgba(148, 148, 148, 0.2485);text-align:center;" >
