@@ -35,7 +35,7 @@ export default function fetchGroupFeedFB(job, done) {
 				FB.api(`${groupId}/feed?since=${unixtime}`, {
 
 					// FB.api(`${groupId}/feed`, {
-					fields: ['message', 'from{picture, name}', 'story'],
+					fields: ['message', 'from{picture, name}', 'story', 'attachments{ media }'],
 					access_token: fbToken.token,
 				}, (res1) => {
 					if (res1.error) {
@@ -54,6 +54,7 @@ export default function fetchGroupFeedFB(job, done) {
 							id: item.id,
 							author: item.from,
 							content: item.message || item.story,
+							images: item.attachments ? item.attachments.data.map((att) => ({ src: att.media.image.src })) : [],
 						};
 
 						if (!fbFeedItem.content) {
