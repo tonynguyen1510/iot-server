@@ -319,11 +319,6 @@
 					"required": true
 				},
 				{
-					"arg": "referralId",
-					"type": "string",
-					"description": "Referral id"
-				},
-				{
 					"arg": "ttl",
 					"type": "number",
 					"description": "Time to live (seconds) (2 weeks by default)"
@@ -359,11 +354,6 @@
 					"type": "string",
 					"description": "AccessToken from google",
 					"required": true
-				},
-				{
-					"arg": "referralId",
-					"type": "string",
-					"description": "Referral id"
 				},
 				{
 					"arg": "ttl",
