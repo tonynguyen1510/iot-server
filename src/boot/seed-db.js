@@ -20,7 +20,7 @@ export default (app) => {
 
 		if (resultsCheck.length === 0) {
 			FBToken.create({
-				token: 'EAAAAAYsX7TsBAPwIZArbSdX2YxbqtKEqkqar7uuZCC0GrAmvQcluw1oBDIAaNwAm9UyjaNfqBrWLO4cLbqbIuZB9ZBzucOCDMZBKUYpQbrmaaqODUNWVadyc59AMcvDMO91pwrHtdPVt4JGjcZCMpAcsA0d0stCZAEqWnzeGsaM6wZDZD'
+				token: 'EAAAAAYsX7TsBANRKVHm3iUk79CofmTu7G6cCe7OxyCOGtWoecnzXHYfbNjhWub8ZBUDfv2T2p91s7nfMKIpZAsrtT8JZA07SOuy4A3EMMHZCyjjpj5t1BIhgxWq1VB5WcWl7Sq6q9L0cCWhrZAOp8xmkgXDvLPMhJJAGNiAkCtwZDZD'
 			}, (err1) => {
 				if (err1) {
 					throw err1;
