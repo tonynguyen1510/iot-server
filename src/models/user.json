@@ -21,6 +21,9 @@
 			"type": "date",
 			"defaultFn": "now"
 		},
+		"lang": {
+			"type": "string"
+		},
 		"status": {
 			"type": "string",
 			"default": "active"

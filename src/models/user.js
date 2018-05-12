@@ -141,7 +141,7 @@ export default function (User) {
 												gender: userZalo.gender || '',
 												zaloId: userZalo.id,
 												loginType: 'zalo',
-												avatar: userZalo.picture && userZalo.picture.data && userZalo.picture.data.url,
+												avatar: userZalo.picture && userZalo.picture.data && userZalo.picture,
 												email,
 												username,
 												password: passwordDefault,
@@ -205,7 +205,7 @@ export default function (User) {
 				gender: res.gender || '',
 				facebookId: res.id,
 				loginType: 'facebook',
-				avatar: res.picture && res.picture.data && res.picture.data.url,
+				avatar: res.picture && res.picture.data && res.picture,
 				password: passwordDefault,
 			};
 
@@ -333,7 +333,6 @@ export default function (User) {
 		});
 	};
 
-
 	// send password reset link when requested
 	User.on('resetPasswordRequest', (info) => {
 		const webUrl = User.app.get('webUrl');
@@ -446,6 +445,78 @@ export default function (User) {
 	};
 
 	User.afterRemote('login', (ctx, modelInstance, next) => {
+		const clientIp = requestIp.getClientIp(ctx.req);
+		const IPTracking = User.app.models.IPTracking;
+
+		User.findById(modelInstance.userId, (err, currentUser) => {
+			if (err) {
+				throw err;
+			}
+
+			IPTracking.create({
+				username: currentUser.username,
+				email: currentUser.email,
+				ip: clientIp,
+			}, (err2) => {
+				if (err2) {
+					console.log('err tracking ip');
+					throw err;
+				}
+
+				next();
+			});
+		});
+	});
+
+	User.afterRemote('loginZalo', (ctx, modelInstance, next) => {
+		const clientIp = requestIp.getClientIp(ctx.req);
+		const IPTracking = User.app.models.IPTracking;
+
+		User.findById(modelInstance.userId, (err, currentUser) => {
+			if (err) {
+				throw err;
+			}
+
+			IPTracking.create({
+				username: currentUser.username,
+				email: currentUser.email,
+				ip: clientIp,
+			}, (err2) => {
+				if (err2) {
+					console.log('err tracking ip');
+					throw err;
+				}
+
+				next();
+			});
+		});
+	});
+
+	User.afterRemote('loginFacebook', (ctx, modelInstance, next) => {
+		const clientIp = requestIp.getClientIp(ctx.req);
+		const IPTracking = User.app.models.IPTracking;
+
+		User.findById(modelInstance.userId, (err, currentUser) => {
+			if (err) {
+				throw err;
+			}
+
+			IPTracking.create({
+				username: currentUser.username,
+				email: currentUser.email,
+				ip: clientIp,
+			}, (err2) => {
+				if (err2) {
+					console.log('err tracking ip');
+					throw err;
+				}
+
+				next();
+			});
+		});
+	});
+
+	User.afterRemote('loginGoogle', (ctx, modelInstance, next) => {
 		const clientIp = requestIp.getClientIp(ctx.req);
 		const IPTracking = User.app.models.IPTracking;
 
