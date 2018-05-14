@@ -1,0 +1,17 @@
+<% include layout/header %>
+<div style="font-size: 20px">Chúc mừng bạn đã mua vé thành công</div>
+<div style="font-size:16px; margin-top:30px; margin-bottom: 40px; line-height: 1.8">
+	<div>Thông tin vé</div>
+	<div>
+			<div><b>Loại vé:</b><%= ticketSelling.flightType === 'oneWay' ? 'Một chiều' : 'Khứ hồi' %></div>
+			<div><b>Số vé:</b> <%= ticketSelling.seatCount %></div>
+			<div><b>Điểm đi:</b> <%= ticketSelling.trip.departure %></div>
+			<div><b>Điểm đến:</b> <%= ticketSelling.trip.destination %></div>
+			<div><b>Ngày đi:</b> <%= ticketSelling.startDate %> </div>
+			<div><b>Ngày về:</b> <%= ticketSelling.endDate %><div>
+			<div><b>Loại ghế:</b> <%= ticketSelling.seatType %></div>
+			<div><b>Số kg mang theo:</b> <%= ticketSelling.packageWeight %></div>
+			<div><b>Hãng bay:</b> <%= ticketSelling.airline %></div>
+	</div>
+</div>
+<% include layout/footer %>
