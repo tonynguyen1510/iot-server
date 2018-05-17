@@ -42,9 +42,6 @@
 		"googleId": {
 			"type": "string"
 		},
-		"zaloId": {
-			"type": "string"
-		},
 		"avatar": {
 			"type": "string"
 		},
@@ -81,36 +78,6 @@
 		"desc": {
 			"type": "string",
 			"index": true
-		},
-		"ratingsCount": {
-			"type": "number",
-			"index": true,
-			"default": 0
-		},
-		"ratingsStats": {
-			"type": {
-				"star": {
-					"type": "number",
-					"default": 0,
-					"index": true
-				},
-				"starDetail": {
-					"type": {
-						"1": "number",
-						"2": "number",
-						"3": "number",
-						"4": "number",
-						"5": "number"
-					},
-					"default": {
-						"1": 0,
-						"2": 0,
-						"3": 0,
-						"4": 0,
-						"5": 0
-					}
-				}
-			}
 		}
 	},
 	"validations": [],

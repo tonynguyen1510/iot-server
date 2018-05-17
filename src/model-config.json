@@ -48,49 +48,5 @@
 	"user": {
 		"dataSource": "mongod",
 		"public": true
-	},
-	"TicketSelling": {
-		"dataSource": "mongod",
-		"public": true
-	},
-	"TicketSellingBid": {
-		"dataSource": "mongod",
-		"public": true
-	},
-	"TicketBuying": {
-		"dataSource": "mongod",
-		"public": true
-	},
-	"TicketBuyingBid": {
-		"dataSource": "mongod",
-		"public": true
-	},
-	"FBFeed": {
-		"dataSource": "mongod",
-		"public": true
-	},
-	"Bid": {
-		"dataSource": "mongod",
-		"public": true
-	},
-	"Tracking": {
-		"dataSource": "mongod",
-		"public": true
-	},
-	"Rating": {
-		"dataSource": "mongod",
-		"public": true
-	},
-	"FBGroup": {
-		"dataSource": "mongod",
-		"public": true
-	},
-	"FBToken": {
-		"dataSource": "mongod",
-		"public": true
-	},
-	"IPTracking": {
-		"dataSource": "mongod",
-		"public": true
 	}
 }

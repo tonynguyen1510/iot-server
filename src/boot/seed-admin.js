@@ -11,7 +11,7 @@ export default (app) => {
 	const Role = app.models.Role;
 	const RoleMapping = app.models.RoleMapping;
 
-	User.findOne({ where: { email: 'admin@chove.vn' } }, (errCheck, userCheck) => {
+	User.findOne({ where: { email: 'admin@gmail.com' } }, (errCheck, userCheck) => {
 		if (errCheck) {
 			throw errCheck;
 		}
@@ -20,7 +20,7 @@ export default (app) => {
 			return ;
 		}
 
-		User.create({ fullName: 'Admin', email: 'admin@chove.vn', username: 'admin', password: '123456', emailVerified: true, role: 'admin' }, (err, user) => {
+		User.create({ fullName: 'Admin', email: 'admin@gmail.com', username: 'admin', password: '123456', emailVerified: true, role: 'admin' }, (err, user) => {
 			if (err) {
 				throw err;
 			}

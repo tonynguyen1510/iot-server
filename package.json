@@ -16,6 +16,7 @@
   "dependencies": {
     "add": "^2.0.6",
     "agenda": "^1.0.3",
+    "async": "^2.6.0",
     "axios": "^0.17.1",
     "compression": "^1.0.3",
     "connect-mongo": "^2.0.0",

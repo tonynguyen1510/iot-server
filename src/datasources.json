@@ -7,10 +7,10 @@
 		"host": "127.0.0.1",
 		"port": 27017,
 		"url": "",
-		"database": "chove",
+		"database": "codebase",
 		"password": "",
 		"name": "mongod",
-		"user": "chove",
+		"user": "codebase",
 		"connector": "mongodb",
 		"allowExtendedOperators": true
 	}
