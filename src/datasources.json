@@ -13,5 +13,16 @@
 		"user": "codebase",
 		"connector": "mongodb",
 		"allowExtendedOperators": true
+	},
+	"mycass": {
+		"host": "localhost",
+		"port": 9042,
+		"database": "codebase",
+		"password": "",
+		"name": "mycass",
+		"user": "root",
+		"connectTimeout": 30000,
+		"readTimeout": 30000,
+		"connector": "cassandra"
 	}
 }

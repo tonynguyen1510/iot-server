@@ -48,5 +48,9 @@
 	"user": {
 		"dataSource": "mongod",
 		"public": true
+	},
+	"product": {
+		"dataSource": "mongod",
+		"public": true
 	}
 }
