@@ -3,17 +3,6 @@
 		"name": "db",
 		"connector": "memory"
 	},
-	"mongod": {
-		"host": "127.0.0.1",
-		"port": 27017,
-		"url": "",
-		"database": "codebase",
-		"password": "",
-		"name": "mongod",
-		"user": "codebase",
-		"connector": "mongodb",
-		"allowExtendedOperators": true
-	},
 	"mycass": {
 		"host": "localhost",
 		"port": 9042,
