@@ -11,7 +11,7 @@ module.exports = { // eslint-disable-line
 		'host': process.env.MONGODB_HOST || '127.0.0.1',
 		'port': process.env.MONGODB_PORT || 27017,
 		'url': '',
-		'database': process.env.MONGODB_PORT || 'codebase',
+		'database': process.env.MONGODB_DATABASE || 'codebase',
 		'password': process.env.MONGODB_PASSWORD || '',
 		'name': 'mongod',
 		'user': process.env.MONGODB_USER || 'codebase',
