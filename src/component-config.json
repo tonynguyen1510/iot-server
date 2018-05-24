@@ -3,8 +3,8 @@
 		"mountPath": "/explorer",
 		"uiDirs": "src/explorer",
 		"apiInfo": {
-			"title": "CHOVE.VN API",
-			"description": "Copyright © Chove.vn <br /> <a href='/explorer/docs.html'>Document</a>"
+			"title": "Basic Api For App",
+			"description": "Copyright © Zelo Studio <br /> <a href='/explorer/docs.html'>Document</a>"
 		}
 	}
 }
