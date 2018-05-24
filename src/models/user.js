@@ -16,7 +16,7 @@ import login from 'src/utils/login';
 import predefined from 'src/constant/predefined';
 
 const auth = new GoogleAuth();
-const client = new auth.OAuth2(['314929847304-blffjtcncvq4vbc92msgojprhqnudu8i.apps.googleusercontent.com'], 'YIk4yZaKBMBynZentZX2MnLl', '');
+const client = new auth.OAuth2(['502795845770-gcps0fn2j1dcrfan99ntvvbru3dbkomr.apps.googleusercontent.com'], 'BtNYH3oaXAgKxmfVVZR1BRds', '');
 
 const ZSClient = new Zalo.ZaloSocial({
 	appId: '92423462607218680',
@@ -255,7 +255,7 @@ export default function (User) {
 	};
 
 	User.loginGoogle = (accessToken, ttl, include = '{}', next) => {
-		client.verifyIdToken(accessToken, ['671782562952-rhmgci05iqn7bfg7l380c24ftb2kq5r5.apps.googleusercontent.com'], function (e, res) {
+		client.verifyIdToken(accessToken, ['502795845770-gcps0fn2j1dcrfan99ntvvbru3dbkomr.apps.googleusercontent.com'], function (e, res) {
 			if (e) {
 				return next(e);
 			}
