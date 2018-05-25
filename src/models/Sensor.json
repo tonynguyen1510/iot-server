@@ -1,0 +1,34 @@
+{
+	"name": "Sensor",
+	"plural": "sensors",
+	"base": "PersistedModel",
+	"idInjection": true,
+	"options": {
+		"validateUpsert": true
+	},
+	"scope": {
+		"order": "createdAt DESC"
+	},
+	"properties": {
+		"createdAt": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"updatedAt": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"name": {
+			"type": "string"
+		}
+	},
+	"validations": [],
+	"relations": {
+		"SensorValues": {
+			"type": "hasMany",
+			"model": "SensorValue"
+		}
+	},
+	"acls": [],
+	"methods": {}
+}
