@@ -23,34 +23,42 @@
 		"dataSource": "emailDs"
 	},
 	"User": {
-		"dataSource": "firestore",
+		"dataSource": "mongod",
 		"public": false
 	},
 	"AccessToken": {
-		"dataSource": "firestore",
+		"dataSource": "mongod",
 		"public": false
 	},
 	"ACL": {
-		"dataSource": "firestore",
+		"dataSource": "mongod",
 		"public": false
 	},
 	"RoleMapping": {
-		"dataSource": "firestore",
+		"dataSource": "mongod",
 		"public": false,
 		"options": {
 			"strictObjectIDCoercion": true
 		}
 	},
 	"Role": {
-		"dataSource": "firestore",
+		"dataSource": "mongod",
 		"public": false
 	},
 	"user": {
-		"dataSource": "firestore",
+		"dataSource": "mongod",
 		"public": true
 	},
-	"product": {
-		"dataSource": "firestore",
+	"Product": {
+		"dataSource": "mongod",
+		"public": true
+	},
+	"Sensor": {
+		"dataSource": "mongod",
+		"public": true
+	},
+	"SensorValue": {
+		"dataSource": "mongod",
 		"public": true
 	}
 }

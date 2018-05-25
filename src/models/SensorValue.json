@@ -1,0 +1,36 @@
+{
+	"name": "SensorValue",
+	"plural": "sensor-values",
+	"base": "PersistedModel",
+	"idInjection": true,
+	"options": {
+		"validateUpsert": true
+	},
+	"scope": {
+		"order": "createdAt DESC"
+	},
+	"properties": {
+		"createdAt": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"updatedAt": {
+			"type": "date",
+			"defaultFn": "now"
+		},
+		"value": {
+			"type": "number"
+		}
+	},
+	"validations": [],
+	"relations": {
+		"Sensor": {
+			"type": "belongsTo",
+			"model": "Sensor",
+			"foreignKey": "sensorName",
+			"primaryKey": "name"
+		}
+	},
+	"acls": [],
+	"methods": {}
+}

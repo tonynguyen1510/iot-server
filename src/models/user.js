@@ -11,7 +11,7 @@ import GoogleAuth from 'google-auth-library';
 import Zalo from 'zalo-sdk';
 import loopback from 'loopback';
 // import axios from 'axios';
-
+import _ from 'underscore';
 import login from 'src/utils/login';
 import predefined from 'src/constant/predefined';
 
@@ -76,6 +76,26 @@ export default function (User) {
 			next();
 		}
 	};
+
+	User.observe('before save', function updateTimestamp(ctx, next) {
+		const dateNow = Date.now(); // Math.floor(Date.now() / 1000);
+
+		if (ctx.instance) {
+			if (!ctx.instance.id) {
+				ctx.instance.createdAt = dateNow;
+			}
+			ctx.instance.updatedAt = dateNow;
+			if (!_.isEmpty(ctx.currentInstance) && !_.isEmpty(ctx.currentInstance.createdAt) && !_.isEmpty(ctx.instance.createdAt)) {
+				ctx.instance.createdAt = ctx.currentInstance.createdAt;
+			}
+		} else {
+			ctx.data.updatedAt = dateNow;
+			if (!_.isEmpty(ctx.currentInstance) && (ctx.currentInstance.createdAt) && (ctx.data.createdAt)) {
+				ctx.data.createdAt = ctx.currentInstance.createdAt;
+			}
+		}
+		next();
+	});
 
 	User.beforeRemote('create', (ctx, u, next) => {
 		const { data: user = {} } = ctx.args;
