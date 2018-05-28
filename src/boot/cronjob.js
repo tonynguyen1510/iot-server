@@ -21,7 +21,7 @@ client.on('connect', function () {
 });
 client.on('message', function (topic, message) {
 	// message is Buffer
-	console.log(message.toString());
+	// console.log(message.toString());
 	// client.end();
 });
 
@@ -39,12 +39,12 @@ export default (app) => {
 			return cb();
 		}
 		SensorValue.create({ value, sensorName }, (err1, instace) => {
-			client.publish('topic', sensorName + ':' + value);
+			client.publish(sensorName, value.toString());
 			return cb(err1, instace);
 		});
 	};
 
-	schedule.scheduleJob('*/60 * * * * *', () => {
+	schedule.scheduleJob('*/2 * * * * *', () => {
 		async.parallel([
 			(cb) => {
 				createValue(6, 'sensor1', cb);
