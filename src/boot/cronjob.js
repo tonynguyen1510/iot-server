@@ -44,7 +44,7 @@ export default (app) => {
 		});
 	};
 
-	schedule.scheduleJob('*/20 * * * * *', () => {
+	schedule.scheduleJob('*/10 * * * * *', () => {
 		async.parallel([
 			(cb) => {
 				createValue(6, 'sensor1', cb);
