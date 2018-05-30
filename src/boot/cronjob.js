@@ -33,7 +33,7 @@ export default (app) => {
 	};
 
 	const createValue = (del, sensorName, cb) => {
-		const value = randomNumber(1, 1000);
+		const value = 300 + randomNumber(-10 * del, 10 * del);
 
 		if (value % del !== 0) {
 			return cb();
@@ -44,7 +44,7 @@ export default (app) => {
 		});
 	};
 
-	schedule.scheduleJob('*/10 * * * * *', () => {
+	schedule.scheduleJob('*/2 * * * * *', () => {
 		async.parallel([
 			(cb) => {
 				createValue(6, 'sensor1', cb);
