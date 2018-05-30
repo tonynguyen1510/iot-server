@@ -33,7 +33,7 @@ export default (app) => {
 	};
 
 	const createValue = (del, sensorName, cb) => {
-		const value = 300 + randomNumber(-10 * del, 10 * del);
+		const value = 100 + randomNumber(- del, 10);
 
 		if (value % del !== 0) {
 			return cb();
@@ -50,16 +50,16 @@ export default (app) => {
 				createValue(6, 'sensor1', cb);
 			},
 			(cb) => {
-				createValue(2, 'sensor2', cb);
+				createValue(8, 'sensor2', cb);
 			},
 			(cb) => {
-				createValue(3, 'sensor3', cb);
+				createValue(10, 'sensor3', cb);
 			},
 			(cb) => {
-				createValue(4, 'sensor4', cb);
+				createValue(12, 'sensor4', cb);
 			},
 			(cb) => {
-				createValue(5, 'sensor5', cb);
+				createValue(14, 'sensor5', cb);
 			},
 		], (err, res) => {
 			if (err) console.log(err);
