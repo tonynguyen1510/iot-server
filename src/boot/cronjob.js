@@ -33,7 +33,7 @@ export default (app) => {
 	};
 
 	const createValue = (del, sensorName, cb) => {
-		const value = 100 + randomNumber(- del, 10);
+		const value = 1000 + randomNumber(- del, 10);
 		const fre = del === 14 ? 5 : del / 2;
 
 		if (value % (fre - 1) !== 0) {
