@@ -15,7 +15,7 @@ export default function (app) {
 		if (err) {
 			console.log('err', err);
 		}
-		console.log('changes', changes);
+		// console.log('changes', changes);
 		changes.pipe(es.stringify()).pipe(process.stdout);
 	});
 }
