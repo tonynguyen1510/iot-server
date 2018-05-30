@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "eslint .",
     "posttest": "npm run lint && nsp check",
-    "start": "npm run dev",
+    "start": "NODE_ENV=production babel-node .",
     "dev": "nodemon . --exec babel-node",
     "create-table": "nodemon ./src/servers/create-lb-tables.js --exec babel-node",
     "prod": "NODE_ENV=production babel-node .",
