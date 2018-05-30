@@ -35,7 +35,7 @@ export default (app) => {
 	const createValue = (del, sensorName, cb) => {
 		const value = 100 + randomNumber(- del, 10);
 
-		if (value % del !== 0) {
+		if (value % (del/2 - 1) !== 0) {
 			return cb();
 		}
 		SensorValue.create({ value, sensorName }, (err1, instace) => {
@@ -44,7 +44,7 @@ export default (app) => {
 		});
 	};
 
-	schedule.scheduleJob('*/2 * * * * *', () => {
+	schedule.scheduleJob('*/1 * * * * *', () => {
 		async.parallel([
 			(cb) => {
 				createValue(6, 'sensor1', cb);
