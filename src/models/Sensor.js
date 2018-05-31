@@ -31,7 +31,7 @@ export default function (Sensor) {
 		next();
 	});
 
-	Sensor.calculateRMS = (sensorValues) => {
+	Sensor.calculateRMS = (sensorValues, name) => {
 		let ms = 0;
 		let n = 0;
 		let sum = 0;
@@ -51,6 +51,7 @@ export default function (Sensor) {
 		// const varFFT = fft([1, 0, 1, 0]);
 
 		const result = {
+			name,
 			rms: Math.sqrt(ms),
 			max,
 			min,
@@ -62,13 +63,7 @@ export default function (Sensor) {
 	};
 
 	Sensor.analysis = (next) => {
-		let result = {
-			'sensor1': 0,
-			'sensor2': 0,
-			'sensor3': 0,
-			'sensor4': 0,
-			'sensor5': 0
-		};
+		let result = [];
 
 		Sensor.find({
 			include: {
@@ -76,7 +71,7 @@ export default function (Sensor) {
 			}
 		}, (err, sensors) => {
 			async.eachLimit(sensors, 5, (sensor, cb) => {
-				result[sensor.name] = Sensor.calculateRMS(sensor.SensorValues());
+				result.push(Sensor.calculateRMS(sensor.SensorValues(), sensor.name));
 				cb();
 			}, (err) => {
 				if (err) console.log('err', err);
