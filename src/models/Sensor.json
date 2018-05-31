@@ -32,5 +32,22 @@
 		}
 	},
 	"acls": [],
-	"methods": {}
+	"methods": {
+		"analysis": {
+			"accepts": [
+			],
+			"returns": {
+				"arg": "result",
+				"type": "object",
+				"root": true
+			},
+			"description": "Analysis sensor values",
+			"http": [
+				{
+					"path": "/analysis",
+					"verb": "get"
+				}
+			]
+		}
+	}
 }
